@@ -1,0 +1,6 @@
+export { default as PageCategory } from './Category'
+export { default as PageDashboard } from './Dashboard'
+export { default as PageOrder } from './Orders'
+export { default as PageProduct } from './Products'
+export { default as PageSetting } from './Setting'
+export { default as PageUser } from './Users'
