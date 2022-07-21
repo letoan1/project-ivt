@@ -1,0 +1,15 @@
+@import './_variable';
+
+.carousel {
+    max-width: $max-width;
+    margin: $margin-center;
+    margin-top: 50px;
+    padding: 30px;
+    border-radius: 30px;
+    background-color: $white-color;
+    overflow: hidden;
+}
+
+.swiper.swiper-initialized.swiper-horizontal.swiper-pointer-events.swiper-backface-hidden.mySwiper {
+    width: 100%;
+}

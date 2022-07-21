@@ -1,0 +1,32 @@
+@import './_variable';
+.checkout {
+    background-color: #efefef;
+    padding: 50px;
+
+    .checkout__col {
+        display: flex;
+        max-width: $max-width;
+        margin: $margin-center;
+        background-color: $white-color;
+        padding: 30px;
+        border-radius: 30px;
+        gap: 30px;
+    }
+
+    .col__info-cus {
+        flex-basis: 60%;
+    }
+
+    .col__cart-checkout {
+        flex-basis: 40%;
+    }
+
+    .form-group {
+        display: flex;
+    }
+
+    .col-right,
+    .col-left {
+        flex-basis: 50%;
+    }
+}

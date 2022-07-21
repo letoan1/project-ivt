@@ -1,0 +1,31 @@
+@import './_variable';
+
+.tabs-product {
+    max-width: $max-width;
+    margin: $margin-center;
+    border-radius: 30px;
+    padding: 30px;
+    background-color: $white-color;
+
+    & .tabs-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 20px;
+    }
+}
+
+.ant-tabs-nav-wrap {
+    margin-left: 38%;
+}
+
+.ant-tabs-nav-list {
+    color: $black-color;
+}
+
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: $black-color;
+}
+
+.ant-tabs-ink-bar.ant-tabs-ink-bar-animated {
+    background-color: $black-color;
+}
