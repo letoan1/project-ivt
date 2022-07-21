@@ -28,6 +28,8 @@ export default function HomePage() {
         dispatch(actGetProductsHome());
     }, [dispatch]);
 
+    console.log(products);
+
     return (
         <>
             <Slide />
