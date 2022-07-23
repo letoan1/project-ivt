@@ -1,6 +1,6 @@
-export { default as PageCategory } from './Category'
-export { default as PageDashboard } from './Dashboard'
-export { default as PageOrder } from './Orders'
-export { default as PageProduct } from './Products'
-export { default as PageSetting } from './Setting'
-export { default as PageUser } from './Users'
+export { default as PageDashboard } from './AdminPage/Dashboard';
+export { default as PageOrder } from './AdminPage/Orders';
+export { default as PageProduct } from './AdminPage/Products';
+export { default as PageSetting } from './AdminPage/Setting';
+export { default as PageUser } from './AdminPage/Users';
+export { default as AdminPage } from './AdminPage';
