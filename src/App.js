@@ -11,13 +11,15 @@ import ProductDetail from './pages/ProductDetail';
 import ProfilePage from './pages/ProfilePage';
 import CartDetail from './pages/CartDetail';
 import CheckOutPage from './pages/CheckOutPage';
+import { AdminPage } from './pages';
+import { ROUTES } from './constants/Router';
 
 function App() {
     const { isLoggIn } = useSelector((state) => state.auth);
 
     return (
         <div className="App" style={{ position: 'relative' }}>
-            <Header />
+            {/* <Header /> */}
             <Switch>
                 <Route exact path="/">
                     <HomePage />
@@ -39,8 +41,11 @@ function App() {
                 <Route path="/checkout">
                     <CheckOutPage />
                 </Route>
+                <Route path={ROUTES.DASHBOAR}>
+                    <AdminPage />
+                </Route>
             </Switch>
-            <Footer />
+            {/* <Footer /> */}
         </div>
     );
 }
