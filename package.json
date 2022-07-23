@@ -15,6 +15,7 @@
         "antd": "^4.21.5",
         "assert": "^2.0.0",
         "axios": "^0.27.2",
+        "bcrypt": "^5.0.1",
         "buffer": "^6.0.3",
         "crypto-browserify": "^3.12.0",
         "framer-motion": "^6.4.3",
@@ -24,6 +25,7 @@
         "jsonwebtoken": "^8.5.1",
         "os": "^0.1.2",
         "os-browserify": "^0.3.0",
+        "path-browserify": "^1.0.1",
         "process": "^0.11.10",
         "query-string": "^7.1.1",
         "react": "^18.2.0",
@@ -39,6 +41,7 @@
         "stream-browserify": "^3.0.0",
         "stream-http": "^3.2.0",
         "swiper": "^8.3.0",
+        "url": "^0.11.0",
         "util": "^0.12.4",
         "web-vitals": "^2.1.4"
     },

@@ -9,7 +9,6 @@ import {
     actLoginSuccess,
     actSetLoadingSuccess,
 } from '../../redux/actions/authAction';
-import jwt from 'jsonwebtoken';
 
 function* login({ payload }) {
     yield put(actSetLoadingSuccess());
@@ -26,8 +25,7 @@ function* login({ payload }) {
 function* getProfile({ payload }) {
     try {
         const token = payload;
-        const decodeToken = yield jwt.decode(token);
-        const username = decodeToken?.email.split('@')[0];
+        const username = token.email.slice(0, -10);
         const profile = yield call(getUserByUsername, username);
         yield put(actGetProfileSuccess({ profile }));
     } catch (error) {

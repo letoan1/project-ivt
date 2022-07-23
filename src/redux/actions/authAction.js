@@ -28,6 +28,7 @@ export const actLoginSuccess = (payload) => {
 };
 
 export const actGetProfile = (payload) => {
+    console.log('token', payload);
     return {
         type: AuthTypes.GET_PROFILE,
         payload: payload,

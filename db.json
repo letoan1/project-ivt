@@ -124,119 +124,97 @@
   ],
   "users": [
     {
-      "email": "Quỳnh@gmail.com",
+      "email": "Toan@gmail.com",
       "password": "123456",
+      "phone": "0832845357",
+      "mail": "toan@gmail.com",
+      "address": "137 Nguyễn Thị Thập - p.Hòa Minh - Liên Chiểu - Đà Nẵng",
+      "gender": "male",
+      "id": 1
+    },
+    {
+      "email": "Quynh@gmail.com",
+      "password": "654321",
       "phone": "0832845357",
       "mail": "q@gmail.com",
       "address": "137 Nguyễn Thị Thập - p.Hòa Minh - Liên Chiểu - Đà Nẵng",
       "gender": "female",
-      "id": 1
+      "id": 2
     },
     {
-      "email": "abc@gmail.com",
+      "email": "Tai@gmail.com",
       "password": "123456",
       "phone": "0832845357",
-      "mail": "a@gmail.com",
+      "mail": "t@gmail.com",
       "address": "137 Nguyễn Thị Thập - p.Hòa Minh - Liên Chiểu - Đà Nẵng",
-      "gender": "male",
-      "id": 2
+      "gender": "female",
+      "id": 3
     }
   ],
   "login": [
     {
       "email": "Quỳnh@gmail.com",
-      "password": "`",
+      "password": "123456",
       "id": 1
     },
     {
-      "email": "quỳnh@gmail.com",
-      "password": "1",
+      "email": "Quynh@gmail.com",
+      "password": "123456",
       "id": 2
     },
     {
-      "email": "Quỳnh@gmail.com",
-      "password": "1",
+      "email": "Tai@gmail.com",
+      "password": "123456",
       "id": 3
     },
     {
-      "email": "Quỳnh@gmail.com",
-      "password": "1",
+      "email": "Toan@gmail.com",
+      "password": "123456",
       "id": 4
     },
     {
-      "email": "Quỳnh@gmail.com",
-      "password": "1",
+      "email": "Toan@gmail.com",
+      "password": "123456",
       "id": 5
-    },
+    }
+  ],
+  "orders": [
     {
-      "email": "abc@gmail.com",
-      "password": "123456",
-      "id": 6
-    },
-    {
-      "email": "Quỳnh@gmail.com",
-      "password": "1",
-      "id": 7
-    },
-    {
+      "createAt": "Thứ Bảy, 23 tháng 7, 2022",
+      "idUser": 1,
+      "cart": [
+        {
+          "id": 5,
+          "tags": "sale",
+          "title": "Mancera Paris Cedrat Boise EDP – 120ML",
+          "img": "https://clmensstore.com/wp-content/uploads/2019/08/Mancera-Paris-Cedrat-Boise-EDP-2.png",
+          "price": 320000,
+          "trademark": "MANCERA PARIS",
+          "capacity": "5oz/133ml",
+          "produce": "Hà Lan",
+          "desc": "Mancera Paris Cedrat Boise EDP –  Siêu phẩm mới về từ hãng Mancera đến từ Paris xa hoa và tráng lệ. Một mùi hương không sinh ra để dành cho đám đông nhưng có ma thuật làm cho người sử dụng phải vân vương sau vài lần thưởng thức mùi hương này.",
+          "quantity": 1
+        },
+        {
+          "id": 6,
+          "tags": "sale",
+          "title": "Acqua di Gio Profondo by Giorgio Armani | 10ml – 75ml – 125ml",
+          "img": "https://clmensstore.com/wp-content/uploads/2022/05/acqua-di-gio-profondo.jpg",
+          "price": 3100000,
+          "trademark": "GIORGIO ARMANI",
+          "capacity": "5oz/133ml",
+          "produce": "Pháp",
+          "desc": "Giorgio Armani là một nhà thiết kế thời trang người Ý đặc biệt được chú ý với trang phục nam giới của mình. Armani bắt đầu sự nghiệp của mình với tư cách là nhà thiết kế cửa sổ trong một cửa hàng bách hóa và làm việc theo cách của mình để trở thành người mua quần áo nam. Từ năm 1960 đến năm 1972, ông là nhà thiết kế cho nhà thiết kế nổi tiếng Nino Cerutti và sau đó làm nhà thiết kế độc lập cho một số hãng thời trang trước khi thành lập thương hiệu của riêng mình. Ông trình làng bộ sưu tập quần áo nam đầu tiên của mình vào năm 1975, tiếp theo là dòng dành cho nữ giới cùng năm đó. Armani đã thu hút được nhiều khán giả hơn cho tác phẩm của mình với bộ phim nổi tiếng “American Gigolo”, trong đó nhân vật của Richard Gere mặc những thiết kế Armani sang trọng. Đây là lần đầu tiên trong nhiều bộ phim hợp tác trong tương lai.",
+          "quantity": 1
+        }
+      ],
+      "totalMoney": 3420000,
+      "paymentMethod": "Thanh toán MoMo",
+      "username": "abc",
+      "phone": "0832845357",
+      "address": "137 Nguyễn Thị Thập - p.Hòa Minh - Liên Chiểu - Đà Nẵng",
       "email": "Toan@gmail.com",
-      "password": "1",
-      "id": 8
-    },
-    {
-      "email": "Toan@gmail.com",
-      "password": "123456",
-      "id": 9
-    },
-    {
-      "email": "Toan@gmail.com",
-      "password": "123456",
-      "id": 10
-    },
-    {
-      "email": "Quỳnh@gmail.com",
-      "password": "123456",
-      "id": 11
-    },
-    {
-      "email": "Quỳnh@gmail.com",
-      "password": "1",
-      "id": 12
-    },
-    {
-      "email": "Quỳnh   @gmail.com",
-      "password": "12",
-      "id": 13
-    },
-    {
-      "email": "Quỳnh@gmail.com",
-      "password": "123456",
-      "id": 14
-    },
-    {
-      "email": "Quỳnh@gmail.com",
-      "password": "1",
-      "id": 15
-    },
-    {
-      "email": "Quỳnh@gmail.com",
-      "password": "123456",
-      "id": 16
-    },
-    {
-      "email": "Quỳnh@gmail.com",
-      "password": "123456",
-      "id": 17
-    },
-    {
-      "email": "Quỳnh@gmail.com",
-      "password": "1",
-      "id": 18
-    },
-    {
-      "email": "Quỳnh@gmail.com",
-      "password": "123456",
-      "id": 19
+      "id": 1
     }
   ]
 }

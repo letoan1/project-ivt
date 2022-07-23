@@ -33,19 +33,24 @@ export const authReducer = (state = initialState, action) => {
             };
             return { ...state };
         }
+
         case AuthTypes.LOGOUT: {
             localStorage.removeItem('accessToken');
             return { ...initialState };
         }
+
         case AuthTypes.GET_PROFILE_FAIL: {
             return { ...initialState };
         }
+
         case AuthTypes.LOGIN_FAIL: {
             return { ...state, isLoadingLogin: false, notif: 'Đăng nhập thất bại !' };
         }
+
         case AuthTypes.SET_IS_LOADING: {
             return { ...state, isLoadingLogin: true };
         }
+
         default:
             return { ...state };
     }

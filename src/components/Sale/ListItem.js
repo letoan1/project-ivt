@@ -9,7 +9,7 @@ export default function ListItem({ productSales }) {
                 ? productLimit?.map((product) => (
                       <ItemContent key={product.id} title={'THÊM VÀO GIỎ HÀNG'} product={product} />
                   ))
-                : 'No product'}
+                : 'Không có sản phẩm !'}
         </>
     );
 }
