@@ -13,11 +13,30 @@ import {
     UserOutlined,
 } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
+import { actGetOrderUser } from '../redux/actions/orderAction';
 
 export default function ProfilePage() {
     const dispatch = useDispatch();
     const { profile } = useSelector((state) => state.auth);
+    const { orders } = useSelector((state) => state.orderReducer);
+
     const history = useHistory();
+
+    const handleChangeProfilePage = (path) => {
+        history.push(`/profile/${path}`);
+    };
+
+    const defaultAvt =
+        profile.gender === 'male'
+            ? 'https://i.pinimg.com/236x/2b/f5/72/2bf572010d4a06b9a7265693f9ff85da.jpg'
+            : profile.gender === 'female'
+            ? 'https://i.pinimg.com/236x/31/50/eb/3150eb1f27c9ccb57b1dd7933cb70e8a.jpg'
+            : 'https://i.pinimg.com/236x/46/69/1b/46691b4ca030f452d38fa961c542d8db.jpg';
+
+    React.useEffect(() => {
+        dispatch(actGetOrderUser(profile.id));
+        // eslint-disable-next-line
+    }, []);
 
     const handleLogOut = () => {
         dispatch(actLogout());
@@ -29,10 +48,7 @@ export default function ProfilePage() {
             <div className="profile-container">
                 <div className="profile__info">
                     <div className="profile__info-avatar">
-                        <img
-                            src="https://i.pinimg.com/236x/31/50/eb/3150eb1f27c9ccb57b1dd7933cb70e8a.jpg"
-                            alt="avatar"
-                        />
+                        <img src={defaultAvt} alt="avatar" />
                         <div className="profile__utilities">
                             <p>{profile?.email?.slice(0, -10)}</p>
                             <p>{profile.mail}</p>
@@ -48,11 +64,13 @@ export default function ProfilePage() {
                 </div>
                 <div className="profile__content">
                     <div className="profile__grid">
-                        <Card>
+                        <Card onClick={() => handleChangeProfilePage('ordered')}>
                             <span className="icon">
                                 <ShoppingCartOutlined />
+                                <span className="order-number">{orders.length}</span>
                             </span>
                             <p className="profile__text">Đơn hàng của bạn</p>
+
                             <p>Kiểm tra các đơn hàng mà bạn đã từng đặt tại Website CL Men's Store</p>
                         </Card>
                         <Card>

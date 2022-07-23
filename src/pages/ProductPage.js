@@ -40,9 +40,9 @@ export default function ProductPage() {
                 <div className="product__items">
                     {!!products?.length
                         ? products?.map((product) => (
-                              <ItemContent key={product?.id} title={'THÊM VÀO GIỎ HÀNG'} product={product} />
+                              <ItemContent key={product?.id}  product={product} />
                           ))
-                        : 'No product'}
+                        : 'Không có sản phẩm !'}
                 </div>
                 <div className="product__list">
                     <h4>LỌC THEO GIÁ</h4>
@@ -50,6 +50,7 @@ export default function ProductPage() {
                         <Col span={24}>
                             <Slider
                                 min={0}
+                                step={5000}
                                 max={1500000}
                                 onChange={onChange}
                                 value={typeof inputValue === 'number' ? inputValue : 0}
@@ -64,7 +65,7 @@ export default function ProductPage() {
                                       <a href="#">{product?.trademark}</a>
                                   </li>
                               ))
-                            : 'No categories'}
+                            : 'Danh mục sản phẩm trống !'}
                     </ul>
                 </div>
             </div>

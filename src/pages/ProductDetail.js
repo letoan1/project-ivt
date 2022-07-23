@@ -13,7 +13,7 @@ export default function ProductDetail() {
     const dispatch = useDispatch();
     const { productDetail } = useSelector((state) => state.productReducer);
     console.log(productDetail);
-    const [chooseQuantity, setChooseQuantity] = React.useState(null);
+    const [chooseQuantity, setChooseQuantity] = React.useState(1);
 
     const history = useCustomeHistory();
 

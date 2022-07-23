@@ -98,6 +98,7 @@ export default function RegisterForm(props) {
                                         message: 'Không được bỏ trống trường này !',
                                     },
                                 ]}
+                                hasFeedback
                             >
                                 <Input />
                             </Form.Item>
@@ -115,6 +116,7 @@ export default function RegisterForm(props) {
                                         message: 'Không được bỏ trống trường này !',
                                     },
                                 ]}
+                                hasFeedback
                             >
                                 <Input />
                             </Form.Item>
@@ -132,6 +134,7 @@ export default function RegisterForm(props) {
                                         message: 'Mật khẩu phải có ít nhất 6 ký tự !',
                                     },
                                 ]}
+                                hasFeedback
                             >
                                 <Input.Password />
                             </Form.Item>
@@ -154,6 +157,7 @@ export default function RegisterForm(props) {
                                         },
                                     }),
                                 ]}
+                                hasFeedback
                             >
                                 <Input.Password />
                             </Form.Item>
@@ -167,6 +171,7 @@ export default function RegisterForm(props) {
                                         message: 'Không được bỏ trống trường này !',
                                     },
                                 ]}
+                                hasFeedback
                             >
                                 <Input />
                             </Form.Item>
@@ -185,6 +190,7 @@ export default function RegisterForm(props) {
                                         },
                                     }),
                                 ]}
+                                hasFeedback
                             >
                                 <Input />
                             </Form.Item>
@@ -198,6 +204,7 @@ export default function RegisterForm(props) {
                                         message: 'Không được bỏ trống trường này !',
                                     },
                                 ]}
+                                hasFeedback
                             >
                                 <Select placeholder="Chọn giới tính của bạn..." allowClear>
                                     <Option value="male">Male</Option>

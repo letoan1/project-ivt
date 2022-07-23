@@ -13,10 +13,19 @@
 .cart {
     position: relative;
     .cart-number {
-        position: absolute;
+        font-size: 15px;
+        line-height: 20px;
+        min-width: 20px;
+        height: 20px;
         top: -15px;
-        font-size: 18px;
-        color: #d26e4b;
+        right: -15px;
+        display: inline-block;
+        position: absolute;
+        border-radius: 50%;
+        font-weight: 600;
+        padding: 0 5px;
+        color: #ffffff;
+        background: #d26e4b;
     }
 }
 
@@ -126,7 +135,7 @@
                 width: 2px;
                 background: #255c45;
                 top: 3px;
-                right: 22%;
+                right: 30%;
             }
         }
     }

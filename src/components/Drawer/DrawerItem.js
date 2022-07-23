@@ -58,10 +58,16 @@ export default function DrawerItem() {
                 )}
             </p>
             <div className="button-drawer">
-                <Link to="/cart-detail">
-                    <Button className="btn-add-to-card">XEM GIỎ HÀNG</Button>
-                </Link>
-                <Button className="btn-add-to-card">THANH TOÁN</Button>
+                {!!cart.length ? (
+                    <>
+                        <Link to="/cart-detail">
+                            <Button className="btn-add-to-card">XEM GIỎ HÀNG</Button>
+                        </Link>
+                        <Link to="/checkout">
+                            <Button className="btn-add-to-card">THANH TOÁN</Button>
+                        </Link>
+                    </>
+                ) : null}
             </div>
         </>
     );

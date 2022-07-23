@@ -1,3 +1,5 @@
+@import './variable';
+
 .btn-add-to-card {
     margin-top: 10px;
     border: 2px solid #000;
@@ -10,4 +12,10 @@
         color: #fff;
         transition: 0.3s;
     }
+}
+
+.checkout-btn {
+    padding: 0 1.2em;
+    background-color: #007562;
+    color: $white-color;
 }

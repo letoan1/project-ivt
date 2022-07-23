@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Header from './components/Header/index';
 import Footer from './components/Footer';
@@ -13,9 +14,21 @@ import CartDetail from './pages/CartDetail';
 import CheckOutPage from './pages/CheckOutPage';
 import { AdminPage } from './pages';
 import { ROUTES } from './constants/Router';
+import { actGetProfile } from './redux/actions/authAction';
+import OrderedPage from './pages/OrderedPage';
 
 function App() {
+    const dispatch = useDispatch();
     const { isLoggIn } = useSelector((state) => state.auth);
+
+    const accessToken = JSON.parse(localStorage.getItem('accessToken')) || null;
+    console.log('accessToken', accessToken);
+
+    React.useEffect(() => {
+        if (accessToken) {
+            dispatch(actGetProfile(accessToken));
+        }
+    }, [dispatch]);
 
     return (
         <div className="App" style={{ position: 'relative' }}>
@@ -31,7 +44,7 @@ function App() {
                     <ProductDetail />
                 </Route>
                 {isLoggIn ? (
-                    <Route path="/profile">
+                    <Route exact path="/profile">
                         <ProfilePage />
                     </Route>
                 ) : null}
@@ -43,6 +56,9 @@ function App() {
                 </Route>
                 <Route path={ROUTES.DASHBOAR}>
                     <AdminPage />
+                </Route>
+                <Route path="/profile/ordered">
+                    <OrderedPage />
                 </Route>
             </Switch>
             {/* <Footer /> */}

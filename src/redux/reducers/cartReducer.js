@@ -19,6 +19,7 @@ export const cartReducer = (state = initialState, action) => {
             localStorage.setItem('cart', JSON.stringify(cart));
             return { flagCart: cart.length, cart: cart };
         }
+
         case CartTypes.ADD_MORE_TO_CART_SUCCESS: {
             const { product, chooseQuantity } = action.payload;
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -31,6 +32,7 @@ export const cartReducer = (state = initialState, action) => {
             localStorage.setItem('cart', JSON.stringify(cart));
             return { flagCart: cart.length, cart: cart };
         }
+
         case CartTypes.CHANGE_QUANTITY_CART_SUCESS: {
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
             const indexChange = cart.findIndex((cart) => cart.id === action.payload.id);
@@ -38,18 +40,20 @@ export const cartReducer = (state = initialState, action) => {
             localStorage.setItem('cart', JSON.stringify(cart));
             return { ...state, cart: cart };
         }
+
         case CartTypes.REMOVE_TO_CART_SUCESS: {
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
             const indexDelete = cart.findIndex((cart) => cart.id === action.payload.id);
             cart.splice(indexDelete, 1);
-            // cart.filter(cart => cart.id !== action.payload.id);
             localStorage.setItem('cart', JSON.stringify(cart));
             return { flagCart: cart.length, cart: cart };
         }
+
         case CartTypes.CLEAR_ALL_CART_SUCCESS: {
             localStorage.removeItem('cart');
             return { flagCart: 0, cart: [] };
         }
+
         default: {
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
             return { flagCart: cart.length, cart: cart };
