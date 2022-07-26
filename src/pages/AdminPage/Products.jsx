@@ -1,9 +1,19 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Space, Table, Button, Popconfirm, message } from 'antd';
 import { EditFilled, DeleteFilled } from '@ant-design/icons';
-import ProductForm from '../../formProduct/ProductForm';
+import ProductForm from '../../Form/ProductForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { ProductTypes } from '../../redux/constants';
 
 const Products = () => {
+    const dispatch = useDispatch();
+    const products2 = useSelector((state) => state.productReducer.products);
+    console.log(products2);
+    useEffect(() => {
+        dispatch({ type: ProductTypes.GET_PRODUCT_HOME });
+    }, []);
+
+    // ----------------------
     const { Column } = Table;
     const products = JSON.parse(localStorage.getItem('products'));
     const [dataSource, setDataSource] = useState(products.products || []);

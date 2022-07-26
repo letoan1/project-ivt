@@ -1,7 +1,5 @@
 import React, { useRef, useState, forwardRef, useImperativeHandle } from 'react';
-import { Input, Form, Select, Button, InputNumber, Tag, Modal, message } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
-import { addNewProduct } from '../redux/actions/productAction';
+import { Input, Form, Select, Button, InputNumber, Tag, Modal } from 'antd';
 
 const ProductForm = forwardRef(({ mode }, modalRef) => {
     const { TextArea } = Input;
@@ -70,8 +68,12 @@ const ProductForm = forwardRef(({ mode }, modalRef) => {
         form.resetFields();
     };
 
+    const handleOkModal = () => {
+        setVisible(false);
+        form.resetFields();
+    };
+
     const onEditProduct = (id, product) => {
-        console.log(id, product);
         form.resetFields();
         setVisible(false);
     };
@@ -104,10 +106,10 @@ const ProductForm = forwardRef(({ mode }, modalRef) => {
 
     return (
         <Modal
-            title="New product"
+            title={`${mode === 'ADD' ? 'New Product' : 'Edit Product'}`}
             centered
             visible={visible}
-            onOk={() => setVisible(false)}
+            onOk={handleOkModal}
             onCancel={handleCloseModal}
             width="80%"
         >
@@ -122,7 +124,6 @@ const ProductForm = forwardRef(({ mode }, modalRef) => {
                         },
                     ]}
                     hasFeedback
-                    min={3}
                 >
                     <Input placeholder="Product's name" />
                 </Form.Item>

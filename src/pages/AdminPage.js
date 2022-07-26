@@ -5,6 +5,7 @@ import { DashboardTwoTone, ShopTwoTone, ShoppingTwoTone, ContactsTwoTone, Settin
 import { ROUTES } from '../constants/Router';
 import '../sass/_admin.scss';
 import MainContent from '../components/AdminPage/MainContent';
+import Heading from './AdminPage/Header';
 
 const AdminPage = () => {
     const { Header, Content, Footer, Sider } = Layout;
@@ -25,7 +26,9 @@ const AdminPage = () => {
     ];
     return (
         <Layout style={{ minHeight: '100vh' }}>
-            <Header className="site-header">1111111</Header>
+            <Header className="site-header">
+                <Heading />
+            </Header>
             <Layout>
                 <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
                     <Menu theme="dark" mode="inline" items={items} />
