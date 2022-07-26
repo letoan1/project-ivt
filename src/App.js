@@ -1,29 +1,29 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useParams, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Header from './components/Header/index';
 import Footer from './components/Footer';
-import HomePage from './pages/HomePage';
+import HomePage from './pages/UserPage/HomePage';
 import './sass/_layout.scss';
-import ProductPage from './pages/ProductPage';
-import ProductDetail from './pages/ProductDetail';
-import ProfilePage from './pages/ProfilePage';
-import CartDetail from './pages/CartDetail';
-import CheckOutPage from './pages/CheckOutPage';
+import ProductPage from './pages/UserPage/ProductPage';
+import ProductDetail from './pages/UserPage/ProductDetail';
+import ProfilePage from './pages/UserPage/ProfilePage';
+import CartDetail from './pages/UserPage/CartDetail';
+import CheckOutPage from './pages/UserPage/CheckOutPage';
 import { AdminPage } from './pages';
 import { ROUTES } from './constants/Router';
 import { actGetProfile } from './redux/actions/authAction';
-import OrderedPage from './pages/OrderedPage';
+import OrderedPage from './pages/UserPage/OrderedPage';
+import ChangeProfilePage from './pages/UserPage/ChangeProfilePage';
 
 function App() {
     const dispatch = useDispatch();
+    const { id } = useParams();
     const { isLoggIn } = useSelector((state) => state.auth);
 
     const accessToken = JSON.parse(localStorage.getItem('accessToken')) || null;
-    console.log('accessToken', accessToken);
-
     React.useEffect(() => {
         if (accessToken) {
             dispatch(actGetProfile(accessToken));
@@ -32,7 +32,7 @@ function App() {
 
     return (
         <div className="App" style={{ position: 'relative' }}>
-            {/* <Header /> */}
+            <Header />
             <Switch>
                 <Route exact path="/">
                     <HomePage />
@@ -43,25 +43,33 @@ function App() {
                 <Route path="/products/:id">
                     <ProductDetail />
                 </Route>
-                {isLoggIn ? (
-                    <Route exact path="/profile">
-                        <ProfilePage />
-                    </Route>
-                ) : null}
                 <Route path="/cart-detail">
                     <CartDetail />
                 </Route>
                 <Route path="/checkout">
                     <CheckOutPage />
                 </Route>
-                <Route path={ROUTES.DASHBOAR}>
+                {isLoggIn ? (
+                    <>
+                        <Route exact path="/profile">
+                            <ProfilePage />
+                        </Route>
+                        <Route path="/profile/ordered">
+                            <OrderedPage />
+                        </Route>
+                        <Route path="/profile/change-profile">
+                            <ChangeProfilePage />
+                        </Route>
+                    </>
+                ) : (
+                    <Redirect to="/"></Redirect>
+                )}
+
+                {/* <Route path={ROUTES.DASHBOAR}>
                     <AdminPage />
-                </Route>
-                <Route path="/profile/ordered">
-                    <OrderedPage />
-                </Route>
+                </Route> */}
             </Switch>
-            {/* <Footer /> */}
+            <Footer />
         </div>
     );
 }

@@ -17,6 +17,7 @@
         grid-template-columns: repeat(4, 1fr);
         gap: 20px;
         padding: 20px;
+        flex-basis: 80%;
     }
 
     & .product__list {
@@ -43,5 +44,15 @@
                 font-size: 16px;
             }
         }
+    }
+
+    .price-left {
+        position: absolute;
+        left: 23%;
+    }
+
+    .price-right {
+        position: relative;
+        left: -45%;
     }
 }

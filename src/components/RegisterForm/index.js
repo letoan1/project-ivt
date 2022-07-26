@@ -1,7 +1,7 @@
 import '../../sass/_register.scss';
 import { actCreateUser } from '../../redux/actions/userAction';
 
-import { Button, Checkbox, Form, Input, Select, Modal, message } from 'antd';
+import { Button, Form, Input, Select, Modal, message } from 'antd';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { actLogin } from '../../redux/actions/authAction';
@@ -18,10 +18,10 @@ export default function RegisterForm(props) {
 
     const handleRegister = (value) => {
         const user = {
-            email: value.username,
+            username: value.username,
             password: value.password,
             phone: value.phone,
-            mail: value.email,
+            email: value.email,
             address: value.address,
             gender: value.gender,
         };
@@ -56,10 +56,6 @@ export default function RegisterForm(props) {
         // eslint-disable-next-line
     }, [isLoadingLogin]);
 
-    if (isLoggIn) {
-        console.log('Login succsessfully !');
-    }
-
     return (
         <div className="register">
             <Modal
@@ -90,7 +86,7 @@ export default function RegisterForm(props) {
                             onFinish={handleRegister}
                         >
                             <Form.Item
-                                label="Username"
+                                label="Tên đăng nhập"
                                 name="username"
                                 rules={[
                                     {
@@ -122,7 +118,7 @@ export default function RegisterForm(props) {
                             </Form.Item>
 
                             <Form.Item
-                                label="Password"
+                                label="Mật khẩu"
                                 name="password"
                                 rules={[
                                     {
@@ -140,7 +136,7 @@ export default function RegisterForm(props) {
                             </Form.Item>
 
                             <Form.Item
-                                label="Retype password"
+                                label="Nhập lại mật khẩu"
                                 name="retype-password"
                                 dependencies={['password']}
                                 rules={[
@@ -163,7 +159,7 @@ export default function RegisterForm(props) {
                             </Form.Item>
 
                             <Form.Item
-                                label="Address"
+                                label="Địa chỉ"
                                 name="address"
                                 rules={[
                                     {
@@ -177,7 +173,7 @@ export default function RegisterForm(props) {
                             </Form.Item>
 
                             <Form.Item
-                                label="Phone"
+                                label="Số điện thoại"
                                 name="phone"
                                 rules={[
                                     { required: true, message: 'Không được bỏ trống trường này !' },
@@ -196,7 +192,7 @@ export default function RegisterForm(props) {
                             </Form.Item>
 
                             <Form.Item
-                                label="Gender"
+                                label="Chọn giới tính"
                                 name="gender"
                                 rules={[
                                     {
@@ -242,7 +238,7 @@ export default function RegisterForm(props) {
                             onFinish={handleLogin}
                         >
                             <Form.Item
-                                label="Username"
+                                label="Tên đăng nhập"
                                 name="username"
                                 rules={[
                                     {
@@ -254,7 +250,7 @@ export default function RegisterForm(props) {
                                 <Input />
                             </Form.Item>
                             <Form.Item
-                                label="Password"
+                                label="Mật khẩu"
                                 name="password"
                                 rules={[
                                     {
@@ -264,16 +260,6 @@ export default function RegisterForm(props) {
                                 ]}
                             >
                                 <Input.Password />
-                            </Form.Item>
-                            <Form.Item
-                                name="remember"
-                                valuePropName="checked"
-                                wrapperCol={{
-                                    offset: 8,
-                                    span: 16,
-                                }}
-                            >
-                                <Checkbox>Remember me</Checkbox>
                             </Form.Item>
 
                             <Form.Item

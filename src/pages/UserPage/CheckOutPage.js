@@ -1,10 +1,10 @@
-import '../sass/_checkout.scss';
-import '../sass/_button.scss';
+import '../../sass/_checkout.scss';
+import '../../sass/_button.scss';
 
 import React from 'react';
 import { Button, Form, Input, message, Radio, Space } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { actCreateOrder } from '../redux/actions/orderAction';
+import { actCreateOrder } from '../../redux/actions/orderAction';
 
 const valid = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
 const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -15,8 +15,6 @@ export default function CheckOutPage() {
     const { isLoggIn, profile } = useSelector((state) => state.auth);
     const [paymentMethod, setPaymentMethod] = React.useState(1);
     const [form] = Form.useForm();
-
-    console.log('cart', cart);
 
     const totalMoney = cart.reduce((total, product) => {
         total += product.price * product.quantity;
@@ -219,15 +217,17 @@ export default function CheckOutPage() {
                                 ? cart?.map((item) => (
                                       <div className="your-product-item" key={item?.id}>
                                           <img src={item?.img} alt={item?.title} height={'60px'} width={'60px'} />
-                                          <span style={{ fontSize: '14px' }}>
+                                          <span style={{ fontSize: '14px', minWidth: '400px' }}>
                                               {item?.title}
                                               <strong> x {item?.quantity}</strong>
                                           </span>
                                           <span>
-                                              {(item?.price * item?.quantity).toLocaleString('it-IT', {
-                                                  style: 'currency',
-                                                  currency: 'VND',
-                                              })}
+                                              <strong>
+                                                  {(item?.price * item?.quantity).toLocaleString('it-IT', {
+                                                      style: 'currency',
+                                                      currency: 'VND',
+                                                  })}
+                                              </strong>
                                           </span>
                                       </div>
                                   ))

@@ -1,3 +1,8 @@
+.slide {
+    position: relative;
+    z-index: -1;
+}
+
 .slide__item img {
     height: 80vh;
     width: 100%;

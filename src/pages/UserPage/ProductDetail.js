@@ -1,18 +1,17 @@
 import React from 'react';
 import { Button, InputNumber, message, Rate } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
-import useCustomeHistory from '../hooks/useCustomHistory';
+import useCustomeHistory from '../../hooks/useCustomHistory';
 
-import { actGetProductById } from '../redux/actions/productAction';
-import '../sass/_button.scss';
-import Endow from '../components/Endow';
-import '../sass/_product-detail.scss';
-import { actAddMoreToCartSuccess } from '../redux/actions/cartAction';
+import { actGetProductById } from '../../redux/actions/productAction';
+import '../../sass/_button.scss';
+import Endow from '../../components/Endow';
+import '../../sass/_product-detail.scss';
+import { actAddMoreToCartSuccess } from '../../redux/actions/cartAction';
 
 export default function ProductDetail() {
     const dispatch = useDispatch();
     const { productDetail } = useSelector((state) => state.productReducer);
-    console.log(productDetail);
     const [chooseQuantity, setChooseQuantity] = React.useState(1);
 
     const history = useCustomeHistory();

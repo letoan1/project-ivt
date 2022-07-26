@@ -1,16 +1,21 @@
 import { Button, Table } from 'antd';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
 
-import { actGetOrderUser } from '../redux/actions/orderAction';
-import '../sass/_ordered.scss';
-import '../sass/_button.scss';
-import { Link } from 'react-router-dom';
+import { actGetOrderUser } from '../../redux/actions/orderAction';
+import '../../sass/_ordered.scss';
+import '../../sass/_button.scss';
 
 export default function OrderedPage() {
+    const history = useHistory();
     const dispatch = useDispatch();
     const { profile } = useSelector((state) => state.auth);
     const { orders } = useSelector((state) => state.orderReducer);
+
+    const handleClickToDetail = (id) => {
+        history.push(`/products/${id}`);
+    };
 
     React.useEffect(() => {
         dispatch(actGetOrderUser(profile.id));
@@ -23,7 +28,7 @@ export default function OrderedPage() {
             dataIndex: 'products',
             key: 'products',
             render: (_, item) => (
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div style={{ display: 'flex', alignItems: 'center' }} onClick={() => handleClickToDetail(item?.id)}>
                     <img src={item?.img} alt={item?.title} width="60px" height="60px" style={{ margin: '0 10px' }} />
                     <p>{item?.title}</p>
                 </div>
@@ -58,7 +63,8 @@ export default function OrderedPage() {
                     <div key={order?.id} className="order">
                         <h3>Ngày mua: {order?.createAt}</h3>
                         <Table dataSource={order?.cart} columns={columns} pagination={false} />
-                        <h3 style={{ paddingTop: '15px' }}>
+                        <h3 style={{ paddingTop: '15px' }}>Phương thức thanh toán: {order?.paymentMethod}</h3>
+                        <h3 style={{ paddingTop: '10px' }}>
                             Tổng tiền:{' '}
                             {order?.totalMoney.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}
                         </h3>
