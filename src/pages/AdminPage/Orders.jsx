@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Space, Table, Button, Popconfirm, message, Input } from 'antd';
 import { EditFilled, DeleteFilled, SearchOutlined } from '@ant-design/icons';
+import OrderForm from '../../Form/OrderForm';
 
 const Orders = () => {
+    const modalRef = useRef(null);
     const columns = [
         {
             title: 'Order Code',
@@ -82,7 +84,7 @@ const Orders = () => {
                 },
                 {
                     text: <span>In Transit </span>,
-                    value: 'inTransit ',
+                    value: 'inTransit',
                 },
                 {
                     text: <span>Canceled</span>,
@@ -90,11 +92,28 @@ const Orders = () => {
                 },
             ],
             onFilter: (value, record) => record.deliveryStatus.includes(value),
+            render: (_, { deliveryStatus }) => (
+                <span
+                    style={{
+                        color: `${
+                            deliveryStatus === 'delivered'
+                                ? 'green'
+                                : deliveryStatus === 'shipped'
+                                ? 'blue'
+                                : deliveryStatus === 'inTransit'
+                                ? 'orange'
+                                : 'red'
+                        }`,
+                    }}
+                >
+                    {deliveryStatus.toUpperCase()}
+                </span>
+            ),
+            align: 'center',
         },
         {
             title: 'Address',
             dataIndex: 'address',
-            with: '15%',
         },
         {
             title: 'Action',
@@ -126,7 +145,7 @@ const Orders = () => {
             order: 'Dior Sauvage',
             deliveryDate: new Date().toLocaleDateString(),
             deliveryPrice: '2 300 000',
-            deliveryStatus: 'shipped',
+            deliveryStatus: 'delivered',
             address: 'Da Nang, Viet nam',
         },
         {
@@ -153,7 +172,7 @@ const Orders = () => {
             order: 'Chanel',
             deliveryDate: new Date().toLocaleDateString(),
             deliveryPrice: '2 300 000',
-            deliveryStatus: 'shipped',
+            deliveryStatus: 'inTransit',
             address: 'Da Nang, Viet nam',
         },
         {
@@ -162,7 +181,7 @@ const Orders = () => {
             order: 'Chanel',
             deliveryDate: new Date().toLocaleDateString(),
             deliveryPrice: '2 300 000',
-            deliveryStatus: 'shipped',
+            deliveryStatus: 'canceled',
             address: 'Da Nang, Viet nam',
         },
     ]);
@@ -177,8 +196,14 @@ const Orders = () => {
     const onEdit = (order, e) => {
         e.preventDefault();
         console.log(order);
+        modalRef.current?.handleOpenModal(order);
     };
-    return <Table columns={columns} dataSource={dataSource} bordered size="small"></Table>;
+    return (
+        <>
+            <Table columns={columns} dataSource={dataSource} bordered size="small"></Table>
+            <OrderForm ref={modalRef} />
+        </>
+    );
 };
 
 export default Orders;

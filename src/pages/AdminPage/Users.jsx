@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Space, Table, Button, Popconfirm, message, Input } from 'antd';
 import { EditFilled, DeleteFilled, SearchOutlined } from '@ant-design/icons';
+import UserForm from '../../Form/UserForm';
 
 const Users = () => {
+    const modalRef = useRef(null);
+    const [modeModal, setModeModal] = useState(null);
+
     const columns = [
         {
             title: 'ID',
@@ -60,6 +64,11 @@ const Users = () => {
             with: '15%',
         },
         {
+            title: 'Phone Number',
+            dataIndex: 'phoneNumber',
+            with: '15%',
+        },
+        {
             title: 'Address',
             dataIndex: 'address',
             with: '20%',
@@ -70,13 +79,13 @@ const Users = () => {
             align: 'center',
             render: (_, record) => (
                 <Space size="small">
-                    <Button size="small" onClick={(e) => onEdit(record, e)}>
+                    <Button size="small" onClick={(e) => handleEditUser(record, e)}>
                         <EditFilled />
                     </Button>
                     <Popconfirm
                         placement="topRight"
                         title="Are you sure to delete this product?"
-                        onConfirm={(e) => onDelete(record.id, e)}
+                        onConfirm={(e) => onDelete(record, e)}
                     >
                         <Button size="small">
                             <DeleteFilled />
@@ -93,6 +102,7 @@ const Users = () => {
             dateCreated: new Date().toLocaleDateString(),
             role: 'admin',
             email: 'minhtung@gmail.com',
+            phoneNumber: '0909090999',
             address: 'Da Nang, Viet Nam',
         },
         {
@@ -101,6 +111,7 @@ const Users = () => {
             dateCreated: new Date().toLocaleDateString(),
             role: 'guest',
             email: 'tienleminh@gmail.com',
+            phoneNumber: '0909090999',
             address: 'Vung Tau, Viet Nam',
         },
         {
@@ -109,6 +120,7 @@ const Users = () => {
             dateCreated: new Date().toLocaleDateString(),
             role: 'guest',
             email: 'vuvuong@gmail.com',
+            phoneNumber: '0909090999',
             address: 'Lao Cai, Viet Nam',
         },
         {
@@ -117,6 +129,7 @@ const Users = () => {
             dateCreated: new Date().toLocaleDateString(),
             role: 'guest',
             email: 'chinhvang@gmail.com',
+            phoneNumber: '0909090999',
             address: 'Quang Nam, Viet Nam',
         },
         {
@@ -125,29 +138,48 @@ const Users = () => {
             dateCreated: new Date().toLocaleDateString(),
             role: 'admin',
             email: 'toanvanle@gmail.com',
+            phoneNumber: '0909090999',
             address: 'Quang Tri, Viet Nam',
         },
     ]);
-    const onDelete = (id, e) => {
+    const onDelete = (user, e) => {
         e.preventDefault();
-        const newData = dataSource.filter((item) => item.id !== id);
+
+        if (user.role === 'admin') {
+            message.warning('Cannot delete ADMIN account');
+            return;
+        }
+        const newData = dataSource.filter((item) => item.id !== user.id);
         setDataSource(newData);
         message.success('Delete product success');
     };
 
-    const onEdit = (order, e) => {
+    const handleAddUser = () => {
+        setModeModal('ADD');
+        modalRef.current?.handleOpenModal();
+    };
+    const handleEditUser = (user, e) => {
         e.preventDefault();
-        console.log(order);
+        setModeModal('EDIT');
+        modalRef.current?.handleOpenModal(user);
     };
     return (
-        <Table
-            dataSource={dataSource}
-            columns={columns}
-            size="small"
-            pagination={{
-                pageSize: 2,
-            }}
-        ></Table>
+        <>
+            <div className="new-user" style={{ marginBottom: 10 }}>
+                <Button type="primary" onClick={handleAddUser}>
+                    Add new User
+                </Button>
+            </div>
+            <Table
+                dataSource={dataSource}
+                columns={columns}
+                size="small"
+                pagination={{
+                    pageSize: 20,
+                }}
+            ></Table>
+            <UserForm ref={modalRef} mode={modeModal} />
+        </>
     );
 };
 
