@@ -14,7 +14,7 @@ export const getUserById = async (id) => {
 
 export const getUserByUsername = async (username, password) => {
     const { data } = await axiosClient.get('users', {
-        params: { email: `${username}@gmail.com`, password: password },
+        params: { username: username, password: password },
     });
     return data[0];
 };
@@ -22,7 +22,7 @@ export const getUserByUsername = async (username, password) => {
 export const createUser = async (user) => {
     const res = await axiosClient.post('users', {
         ...user,
-        email: `${user.email}@gmail.com`,
+        username: user.username,
     });
     return res;
 };
@@ -30,7 +30,7 @@ export const createUser = async (user) => {
 export const updateUser = async (id, user) => {
     const res = await axiosClient.put(`users/${id}`, {
         ...user,
-        email: `${user.email}@gmail.com`,
+        username: user.username,
     });
     return res;
 };

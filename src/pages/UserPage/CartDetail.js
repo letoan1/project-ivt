@@ -4,9 +4,9 @@ import { Button, Table, Popconfirm } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { ArrowLeftOutlined, CloseCircleOutlined } from '@ant-design/icons';
 
-import '../sass/_button.scss';
-import '../sass/_cart-detail.scss';
-import { actRemoveToCartSuccess } from '../redux/actions/cartAction';
+import '../../sass/_button.scss';
+import '../../sass/_cart-detail.scss';
+import { actRemoveToCartSuccess } from '../../redux/actions/cartAction';
 import { Link, useHistory } from 'react-router-dom';
 
 export default function CartDetail() {

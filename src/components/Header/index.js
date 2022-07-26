@@ -1,9 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import '../../sass/_header.scss';
 import RegisterForm from '../RegisterForm';
+import SideDrawer from '../Drawer';
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope, faPhone, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
@@ -12,7 +14,6 @@ import { Input } from 'antd';
 import { Button } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, Menu, Space } from 'antd';
-import SideDrawer from '../Drawer';
 import { useSelector } from 'react-redux';
 const { Search } = Input;
 
@@ -97,11 +98,40 @@ const grooming = (
 );
 
 export default function Header() {
+    const history = useHistory();
     const { profile, isLoggIn } = useSelector((state) => state.auth);
     const { cart } = useSelector((state) => state.cartReducer);
-    console.log('Check login', profile, isLoggIn);
+    const { products } = useSelector((state) => state.productReducer);
     const [modalVisible, setModalVisible] = React.useState(false);
+    const [visibleSearchResult, setVisibleSearchResult] = React.useState(false);
     const [visible, setVisible] = React.useState(false);
+    const [searchDebound, setSearchDebound] = React.useState('');
+    const [searchResult, setSearchResult] = React.useState([]);
+    const timingTimeoutRef = React.useRef(null);
+
+    const handleClick = (id) => {
+        history.replace(`/products/${id}`);
+        setVisibleSearchResult(false);
+    };
+
+    const handleSearchDebound = (e) => {
+        const value = e.target.value;
+        setSearchDebound(value);
+
+        if (timingTimeoutRef.current) {
+            clearTimeout(timingTimeoutRef.current);
+        }
+
+        timingTimeoutRef.current = setTimeout(() => {
+            const filterResult = products?.filter((product) => {
+                return (
+                    product?.title?.toLowerCase()?.includes(value) || product?.trademark?.toLowerCase()?.includes(value)
+                );
+            });
+            setSearchResult(filterResult);
+        }, 500);
+        setVisibleSearchResult(true);
+    };
 
     return (
         <>
@@ -151,12 +181,47 @@ export default function Header() {
                             </Link>
                         </div>
                         <div className="masthead__search">
-                            <Search
-                                placeholder="input search text"
-                                style={{
-                                    width: 550,
-                                }}
-                            />
+                            <form>
+                                <Search
+                                    placeholder="Nhập vào đây để tìm kiếm sản phẩm..."
+                                    style={{
+                                        width: 550,
+                                    }}
+                                    value={searchDebound}
+                                    onChange={handleSearchDebound}
+                                />
+                            </form>
+                            {visibleSearchResult && (
+                                <div className="search__result">
+                                    <div className="search__result-show">
+                                        {searchDebound !== '' && !!searchResult.length
+                                            ? searchResult?.map((result) => (
+                                                  <div className="search__result-item" key={result?.id}>
+                                                      <img
+                                                          src={result?.img}
+                                                          alt={result?.title}
+                                                          width="50px"
+                                                          height="50px"
+                                                          onClick={() => handleClick(result?.id)}
+                                                      />
+                                                      <p>{result.title}</p>
+                                                      <span className="price-search">
+                                                          <strong>
+                                                              {result?.price.toLocaleString('it-IT', {
+                                                                  style: 'currency',
+                                                                  currency: 'VND',
+                                                              })}
+                                                          </strong>
+                                                      </span>
+                                                  </div>
+                                              ))
+                                            : searchDebound === ''
+                                            ? setVisibleSearchResult(false)
+                                            : 'Opps ! Không có kết quả tìm kiếm...'}
+                                    </div>
+                                </div>
+                            )}
+
                             <span className="masthead__advise"></span>
                             <h3>TƯ VẤN TRỰC TIẾP</h3>
                         </div>
@@ -176,7 +241,7 @@ export default function Header() {
                                     shape="round"
                                     style={{ background: '#000', border: '1px solid #000' }}
                                 >
-                                    <Link to="/profile">{profile?.email?.slice(0, -10)}</Link>
+                                    <Link to="/profile">{profile?.username}</Link>
                                 </Button>
                             )}
 

@@ -20,7 +20,6 @@ export const actSetLoadingSuccess = () => {
 };
 
 export const actLoginSuccess = (payload) => {
-    console.log(payload);
     return {
         type: AuthTypes.LOGIN_SUCCESS,
         payload: payload,
@@ -28,7 +27,6 @@ export const actLoginSuccess = (payload) => {
 };
 
 export const actGetProfile = (payload) => {
-    console.log('token', payload);
     return {
         type: AuthTypes.GET_PROFILE,
         payload: payload,

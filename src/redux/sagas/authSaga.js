@@ -25,7 +25,7 @@ function* login({ payload }) {
 function* getProfile({ payload }) {
     try {
         const token = payload;
-        const username = token.email.slice(0, -10);
+        const username = token.username;
         const profile = yield call(getUserByUsername, username);
         yield put(actGetProfileSuccess({ profile }));
     } catch (error) {

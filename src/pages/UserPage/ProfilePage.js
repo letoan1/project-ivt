@@ -2,8 +2,8 @@ import React from 'react';
 import { Button, Card } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { actLogout } from '../redux/actions/authAction';
-import '../sass/_profile.scss';
+import { actLogout } from '../../redux/actions/authAction';
+import '../../sass/_profile.scss';
 import {
     CreditCardOutlined,
     HeartOutlined,
@@ -13,7 +13,7 @@ import {
     UserOutlined,
 } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
-import { actGetOrderUser } from '../redux/actions/orderAction';
+import { actGetOrderUser } from '../../redux/actions/orderAction';
 
 export default function ProfilePage() {
     const dispatch = useDispatch();
@@ -26,12 +26,7 @@ export default function ProfilePage() {
         history.push(`/profile/${path}`);
     };
 
-    const defaultAvt =
-        profile.gender === 'male'
-            ? 'https://i.pinimg.com/236x/2b/f5/72/2bf572010d4a06b9a7265693f9ff85da.jpg'
-            : profile.gender === 'female'
-            ? 'https://i.pinimg.com/236x/31/50/eb/3150eb1f27c9ccb57b1dd7933cb70e8a.jpg'
-            : 'https://i.pinimg.com/236x/46/69/1b/46691b4ca030f452d38fa961c542d8db.jpg';
+    const defaultAvt = 'https://i.pinimg.com/236x/2b/f5/72/2bf572010d4a06b9a7265693f9ff85da.jpg';
 
     React.useEffect(() => {
         dispatch(actGetOrderUser(profile.id));
@@ -48,10 +43,10 @@ export default function ProfilePage() {
             <div className="profile-container">
                 <div className="profile__info">
                     <div className="profile__info-avatar">
-                        <img src={defaultAvt} alt="avatar" />
+                        <img src={profile?.avatar ? profile?.avatar : defaultAvt} alt="avatar" />
                         <div className="profile__utilities">
-                            <p>{profile?.email?.slice(0, -10)}</p>
-                            <p>{profile.mail}</p>
+                            <p>{profile?.username}</p>
+                            <p>{profile?.email}</p>
                             <Button
                                 type="primary"
                                 style={{ background: '#000', border: '1px solid #000' }}
@@ -73,7 +68,7 @@ export default function ProfilePage() {
 
                             <p>Kiểm tra các đơn hàng mà bạn đã từng đặt tại Website CL Men's Store</p>
                         </Card>
-                        <Card>
+                        <Card onClick={() => handleChangeProfilePage('change-profile')}>
                             <span className="icon">
                                 <UserOutlined />
                             </span>
