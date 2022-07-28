@@ -3,7 +3,6 @@ import { Typography, Select, Row, Col } from 'antd';
 import OrderPerMonth from '../../chart/OrderPerMonth';
 import OrderInMonth from '../../chart/OrderInMonth';
 import OrderRevernueInMonth from '../../chart/OrderRevernueInMonth';
-import OrderMap from '../../chart/OrderMap';
 
 const Dashboard = () => {
     const [month, setMonth] = useState(1);

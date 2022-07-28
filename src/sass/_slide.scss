@@ -1,8 +1,3 @@
-.slide {
-    position: relative;
-    z-index: -1;
-}
-
 .slide__item img {
     height: 80vh;
     width: 100%;
@@ -11,4 +6,12 @@
 
 .ant-carousel .slick-dots li {
     background: red;
+}
+
+@media only screen and (max-width: 46.1875em) {
+    .slide__item img {
+        min-width: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
 }

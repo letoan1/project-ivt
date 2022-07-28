@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, InputNumber, message, Rate } from 'antd';
+import { Button, InputNumber, message, Rate, Form, Input } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import useCustomeHistory from '../../hooks/useCustomHistory';
 
@@ -8,11 +8,26 @@ import '../../sass/_button.scss';
 import Endow from '../../components/Endow';
 import '../../sass/_product-detail.scss';
 import { actAddMoreToCartSuccess } from '../../redux/actions/cartAction';
+import { actCreateComment, actGetComment } from '../../redux/actions/commentAction';
+import { showRating, discountPrice } from '../../components/Sale/ItemContent';
+
+const { TextArea } = Input;
+const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
 export default function ProductDetail() {
     const dispatch = useDispatch();
     const { productDetail } = useSelector((state) => state.productReducer);
+    const comments = useSelector((state) => state.commentReducer.comments);
+    console.log('comment', comments);
+    const { isLoggIn, profile } = useSelector((state) => state.auth);
     const [chooseQuantity, setChooseQuantity] = React.useState(1);
+    const [form] = Form.useForm();
+
+    let sum = 0;
+    for (let i = 0; i < comments.length; i++) {
+        sum += comments[i].rating;
+    }
+    const tbRating = sum / comments.length;
 
     const history = useCustomeHistory();
 
@@ -27,6 +42,53 @@ export default function ProductDetail() {
     };
 
     React.useEffect(() => {
+        dispatch(actGetComment(productDetail.id));
+    }, [dispatch, productDetail.id]);
+
+    const mapListReview = (reviews) => {
+        return reviews.map((review) => {
+            return (
+                <>
+                    <div className="info-rating">
+                        <div className="user-rating">
+                            <div className="user-review">
+                                <img
+                                    src={review.avatar || null}
+                                    alt="avatar"
+                                    style={{ width: '30px', height: '30px', borderRadius: '50%', objectFit: 'cover' }}
+                                ></img>
+                                <h4 style={{ marginBottom: 0 }}>{review.nameCmt}</h4>
+                                <span>{showRating(review.rating)}</span>
+                            </div>
+                        </div>
+                        <div className="content-comment">
+                            <p>{review.description}</p>
+                        </div>
+                    </div>
+                </>
+            );
+        });
+    };
+
+    const handleSubmitComment = (value) => {
+        if (isLoggIn) {
+            const comment = {
+                idProduct: productDetail.id,
+                description: value.yourComment,
+                rating: value.yourRating,
+                createAt: new Date().toLocaleDateString(undefined, options),
+                avatar: profile.avatar,
+                nameCmt: profile.username,
+                userId: profile.id,
+            };
+            dispatch(actCreateComment(comment));
+        } else {
+            message.warn('Bạn cần đăng nhập trước khi bình luận !');
+        }
+        form.resetFields();
+    };
+
+    React.useEffect(() => {
         const { location } = history;
         const id = location.pathname.split('/')[2];
         dispatch(actGetProductById(id));
@@ -37,21 +99,29 @@ export default function ProductDetail() {
         <div className="product__detail">
             <div className="product__detail-row">
                 <div className="product__detail-img">
-                    <img src={productDetail?.img} alt={productDetail?.title} />
+                    <img src={productDetail?.srcImage} alt={productDetail?.name} />
                 </div>
                 <div className="product__detail-desc">
-                    <h1>{productDetail?.title}</h1>
+                    <h1>{productDetail?.name}</h1>
                     <span className="price">
-                        {productDetail?.price?.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}
+                        {discountPrice(productDetail)?.toLocaleString('it-IT', {
+                            style: 'currency',
+                            currency: 'VND',
+                        })}
                     </span>
-                    <p>
-                        <strong>Thương hiệu:</strong> {productDetail?.trademark}
+                    <p style={{ color: '#fadb14' }}>
+                        {!!comments.length ? (
+                            showRating(tbRating)
+                        ) : (
+                            <span style={{ color: '#000' }}>Chưa có đánh giá</span>
+                        )}
                     </p>
                     <p>
-                        <strong>Dung tích:</strong> {productDetail?.capacity}
+                        <strong>Thương hiệu:</strong>{' '}
+                        {productDetail?.brand?.charAt(0).toUpperCase() + productDetail?.brand?.slice(1)}
                     </p>
                     <p>
-                        <strong>Sản xuất:</strong> {productDetail?.produce}
+                        <strong>Dung tích:</strong> {`${productDetail?.capacity}ml`}
                     </p>
 
                     <form>
@@ -96,7 +166,7 @@ export default function ProductDetail() {
                 </div>
                 <div className="detail__desc">
                     <span>Nước hoa Acqua di Gio Absolu by Giorgio Armani – Di sản của văn hóa trung đông</span>
-                    <p>{productDetail?.desc}</p>
+                    <p>{productDetail?.description}</p>
                     <span>Thông tin về nước hoa Acqua di Gio Absolu by Giorgio Armani</span>
                     <ul>
                         <li>Nhóm nước hoa: Hương biển, Hương gỗ</li>
@@ -105,10 +175,32 @@ export default function ProductDetail() {
                         <li>Nhà pha chế: Alberto Morrilas</li>
                         <li>Nồng độ: EDP</li>
                     </ul>
-
-                    <span>Đánh giá {productDetail?.title}</span>
-                    <div className="rate">
-                        <Rate />
+                    <span>Đánh giá {productDetail?.name}</span>
+                    <div className="list-review" style={{ padding: '20px 0' }}>
+                        {mapListReview(comments)}
+                    </div>
+                    <div className="form-comment">
+                        <Form onFinish={handleSubmitComment} layout={'vertical'} form={form}>
+                            <Form.Item
+                                rules={[{ required: true, message: 'Không được bỏ trống trường này !' }]}
+                                label={'Đánh giá của bạn'}
+                                name="yourRating"
+                            >
+                                <Rate></Rate>
+                            </Form.Item>
+                            <Form.Item
+                                rules={[{ required: true, message: 'Không được bỏ trống trường này !' }]}
+                                label={'Bình luận'}
+                                name="yourComment"
+                            >
+                                <TextArea rows={4} placeholder="Nêu nhận xét của bạn về sản phẩm tại đây..."></TextArea>
+                            </Form.Item>
+                            <Form.Item>
+                                <Button className="btn-add-to-card" htmlType="submit">
+                                    BÌNH LUẬN
+                                </Button>
+                            </Form.Item>
+                        </Form>
                     </div>
                 </div>
             </div>

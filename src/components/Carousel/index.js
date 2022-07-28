@@ -8,9 +8,13 @@ import ItemContent from '../Sale/ItemContent';
 
 import '../../sass/_carousel.scss';
 
-export default function Carousel({ tagFil, products }) {
-    const filterTagsName = products?.filter((product) => product?.tags === tagFil);
+export const filTagProduct = (tagFil, products) => {
+    const filterTagsName = products?.filter((product) => product?.tags.includes(tagFil));
     const renderTag = tagFil ? filterTagsName : products;
+    return renderTag;
+};
+
+export default function Carousel({ tagFil, products }) {
     return (
         <div className="carousel">
             <Swiper
@@ -22,8 +26,8 @@ export default function Carousel({ tagFil, products }) {
                 modules={[Pagination]}
                 className="mySwiper"
             >
-                {!!renderTag?.length
-                    ? renderTag?.map((product) => (
+                {!!filTagProduct(tagFil, products)?.length
+                    ? filTagProduct(tagFil, products)?.map((product) => (
                           <SwiperSlide key={product?.id}>
                               <ItemContent product={product} title={'THÊM VÀO GIỎ HÀNG'} />
                           </SwiperSlide>

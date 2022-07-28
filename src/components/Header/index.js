@@ -9,93 +9,9 @@ import { Link, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope, faPhone, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
-import { UnorderedListOutlined } from '@ant-design/icons';
-import { Input } from 'antd';
-import { Button } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
-import { Dropdown, Menu, Space } from 'antd';
+import { Input, Button, Space } from 'antd';
 import { useSelector } from 'react-redux';
 const { Search } = Input;
-
-const menu = (
-    <Menu
-        items={[
-            {
-                key: '1',
-                label: 'Tạo kiểu tóc',
-                children: [
-                    {
-                        key: '1-1',
-                        label: <Link to="/products">Sáp vuốt tóc</Link>,
-                    },
-                    {
-                        key: '1-2',
-                        label: 'Pomade',
-                    },
-                    {
-                        key: '1-3',
-                        label: 'Bột tạo phồng',
-                    },
-                ],
-            },
-            {
-                key: '2',
-                label: 'Chăm sóc tóc',
-                children: [
-                    {
-                        key: '2-1',
-                        label: 'Dầu gội cao cấp',
-                    },
-                    {
-                        key: '2-2',
-                        label: 'Dầu xả cao cấp',
-                    },
-                ],
-            },
-            {
-                key: '3',
-                label: 'Nước hoa',
-                children: [
-                    {
-                        key: '3-1',
-                        label: 'Nước hoa nam',
-                    },
-                    {
-                        key: '3-2',
-                        label: 'Nước hoa nữ',
-                    },
-                ],
-            },
-        ]}
-    />
-);
-
-const grooming = (
-    <Menu
-        items={[
-            {
-                key: '1',
-                label: 'APESTOMEN',
-            },
-            {
-                key: '2',
-                label: 'APESTOMEN',
-            },
-            {
-                key: '3',
-                label: 'APESTOMEN',
-            },
-            {
-                key: '4',
-                label: 'APESTOMEN',
-            },
-            {
-                key: '5',
-                label: 'APESTOMEN',
-            },
-        ]}
-    />
-);
 
 export default function Header() {
     const history = useHistory();
@@ -109,9 +25,26 @@ export default function Header() {
     const [searchResult, setSearchResult] = React.useState([]);
     const timingTimeoutRef = React.useRef(null);
 
+    const uniqueIds = [];
+
+    const unique = products.filter((element) => {
+        const isDuplicate = uniqueIds.includes(element.category);
+
+        if (!isDuplicate) {
+            uniqueIds.push(element.category);
+            return true;
+        }
+
+        return false;
+    });
+
     const handleClick = (id) => {
         history.replace(`/products/${id}`);
         setVisibleSearchResult(false);
+    };
+
+    const handleClickCategory = () => {
+        history.push('/products');
     };
 
     const handleSearchDebound = (e) => {
@@ -124,9 +57,7 @@ export default function Header() {
 
         timingTimeoutRef.current = setTimeout(() => {
             const filterResult = products?.filter((product) => {
-                return (
-                    product?.title?.toLowerCase()?.includes(value) || product?.trademark?.toLowerCase()?.includes(value)
-                );
+                return product?.name?.toLowerCase()?.includes(value) || product?.brand?.toLowerCase()?.includes(value);
             });
             setSearchResult(filterResult);
         }, 500);
@@ -198,13 +129,13 @@ export default function Header() {
                                             ? searchResult?.map((result) => (
                                                   <div className="search__result-item" key={result?.id}>
                                                       <img
-                                                          src={result?.img}
-                                                          alt={result?.title}
+                                                          src={result?.srcImage}
+                                                          alt={result?.name}
                                                           width="50px"
                                                           height="50px"
                                                           onClick={() => handleClick(result?.id)}
                                                       />
-                                                      <p>{result.title}</p>
+                                                      <p>{result.name}</p>
                                                       <span className="price-search">
                                                           <strong>
                                                               {result?.price.toLocaleString('it-IT', {
@@ -241,7 +172,9 @@ export default function Header() {
                                     shape="round"
                                     style={{ background: '#000', border: '1px solid #000' }}
                                 >
-                                    <Link to="/profile">{profile?.username}</Link>
+                                    <Link to="/profile">
+                                        <span>{profile?.username}</span>
+                                    </Link>
                                 </Button>
                             )}
 
@@ -258,45 +191,13 @@ export default function Header() {
                     </div>
                     <div className="dropdown">
                         <div className="drop__item">
-                            <Dropdown overlay={menu}>
-                                <a onClick={(e) => e.preventDefault()}>
-                                    <Space>
-                                        <UnorderedListOutlined />
-                                        DANH MỤC CỬA HÀNG
-                                        <DownOutlined />
-                                    </Space>
-                                </a>
-                            </Dropdown>
-                        </div>
-                        <div className="drop__item">
-                            <Dropdown overlay={grooming}>
-                                <a onClick={(e) => e.preventDefault()}>
-                                    <Space>
-                                        THƯƠNG HIỆU GROOMING
-                                        <DownOutlined />
-                                    </Space>
-                                </a>
-                            </Dropdown>
-                        </div>
-                        <div className="drop__item">
-                            <Dropdown overlay={grooming}>
-                                <a onClick={(e) => e.preventDefault()}>
-                                    <Space>
-                                        THƯƠNG HIỆU NƯỚC HOA
-                                        <DownOutlined />
-                                    </Space>
-                                </a>
-                            </Dropdown>
-                        </div>
-                        <div className="drop__item">
-                            <Dropdown overlay={menu}>
-                                <a onClick={(e) => e.preventDefault()}>
-                                    <Space>
-                                        COMBO QUÀ TẶNG
-                                        <DownOutlined />
-                                    </Space>
-                                </a>
-                            </Dropdown>
+                            {unique?.map((produce) => (
+                                <li className="list-category" onClick={handleClickCategory}>
+                                    <a onClick={(e) => e.preventDefault()}>
+                                        <Space>{(produce?.category).toUpperCase()}</Space>
+                                    </a>
+                                </li>
+                            ))}
                         </div>
                     </div>
                 </div>
