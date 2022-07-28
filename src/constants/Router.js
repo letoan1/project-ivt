@@ -1,4 +1,7 @@
 export const ROUTES = {
+    LOGIN: {
+        path: '/login',
+    },
     DASHBOARD: {
         path: '/admin',
         exact: true,
@@ -17,6 +20,6 @@ export const ROUTES = {
     },
     SETTING: {
         path: '/admin/setting',
-        exact: false,
+        exact: true,
     },
 };

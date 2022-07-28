@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from 'react';
+import React, { useState } from 'react';
 import { Switch, Route, useParams, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -12,12 +12,14 @@ import ProductDetail from './pages/UserPage/ProductDetail';
 import ProfilePage from './pages/UserPage/ProfilePage';
 import CartDetail from './pages/UserPage/CartDetail';
 import CheckOutPage from './pages/UserPage/CheckOutPage';
-// import { AdminPage } from './pages';
-// import { ROUTES } from './constants/Router';
+import { AdminPage } from './pages';
+import { ROUTES } from './constants/Router';
 import { actGetProfile } from './redux/actions/authAction';
 import OrderedPage from './pages/UserPage/OrderedPage';
 import ChangeProfilePage from './pages/UserPage/ChangeProfilePage';
 import { UpOutlined } from '@ant-design/icons';
+import AdminLoginPage from './pages/AdminPage/AdminLoginPage';
+import PrivateRoute from './components/AdminPage/PrivateRoute';
 
 function App() {
     const dispatch = useDispatch();
@@ -25,6 +27,7 @@ function App() {
     const { isLoggIn } = useSelector((state) => state.auth);
     const [showGoToTop, setShowGoToTop] = React.useState(false);
 
+    const isAdmin = Boolean(localStorage.getItem('admin_loggedIn'));
     const accessToken = JSON.parse(localStorage.getItem('accessToken')) || null;
     React.useEffect(() => {
         if (accessToken) {
@@ -56,7 +59,7 @@ function App() {
 
     return (
         <div className="App" style={{ position: 'relative' }}>
-            <Header />
+            {!isAdmin && <Header />}
             <Switch>
                 <Route exact path="/">
                     <HomePage />
@@ -73,6 +76,12 @@ function App() {
                 <Route path="/checkout">
                     <CheckOutPage />
                 </Route>
+                <Route path={ROUTES.LOGIN.path}>
+                    <AdminLoginPage />
+                </Route>
+                <PrivateRoute path={ROUTES.DASHBOARD.path}>
+                    <AdminPage />
+                </PrivateRoute>
                 {isLoggIn ? (
                     <>
                         <Route exact path="/profile">
@@ -88,10 +97,6 @@ function App() {
                 ) : (
                     <Redirect to="/"></Redirect>
                 )}
-
-                {/* <Route path={ROUTES.DASHBOAR}>
-                    <AdminPage />
-                </Route> */}
             </Switch>
             <Footer />
             {showGoToTop && (
@@ -110,6 +115,7 @@ function App() {
                     <UpOutlined />
                 </button>
             )}
+            {!isAdmin && <Footer />}
         </div>
     );
 }

@@ -1,24 +1,31 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Space, Table, Button, Popconfirm, message } from 'antd';
-import { EditFilled, DeleteFilled } from '@ant-design/icons';
+import { Space, Table, Button, Popconfirm, message, Input, Tooltip, Image } from 'antd';
+import { EditFilled, DeleteFilled, SearchOutlined } from '@ant-design/icons';
 import ProductForm from '../../Form/ProductForm';
 import { useDispatch, useSelector } from 'react-redux';
+import { deleteProductById } from '../../apis/productsApi';
 import { ProductTypes } from '../../redux/constants';
+import './style.css';
 
 const Products = () => {
+    const { Column } = Table;
     const dispatch = useDispatch();
-    const products2 = useSelector((state) => state.productReducer.products);
-    console.log(products2);
+    const { products } = useSelector((state) => state.productReducer);
+    const THEME = useSelector((state) => state.theme.theme);
+    const isDark = Boolean(THEME === 'dark');
+    const [isLoading, setIsLoading] = useState(false);
+    const [modeModal, setModeModal] = useState(null);
+    const modalRef = useRef(null);
+
     useEffect(() => {
-        dispatch({ type: ProductTypes.GET_PRODUCT_HOME });
+        fetchProducts();
     }, []);
 
+    const fetchProducts = () => {
+        dispatch({ type: ProductTypes.GET_PRODUCT_HOME });
+    };
+
     // ----------------------
-    const { Column } = Table;
-    const products = JSON.parse(localStorage.getItem('products'));
-    const [dataSource, setDataSource] = useState(products.products || []);
-    const modalRef = useRef(null);
-    const [modeModal, setModeModal] = useState(null);
 
     const handleAddProduct = () => {
         setModeModal('ADD');
@@ -29,35 +36,75 @@ const Products = () => {
         setModeModal('EDIT');
         modalRef.current?.handleOpenModal(product);
     };
-    const handleDeleteProduct = (id, e) => {
+    const handleDeleteProduct = async (id, e) => {
         e.preventDefault();
-        const newData = dataSource.filter((item) => item.id !== id);
-        setDataSource(newData);
+        setIsLoading(true);
+        await deleteProductById(id);
         message.success('Delete product success');
+        fetchProducts();
+        setIsLoading(false);
     };
+
     return (
         <>
-            <div className="new-product">
+            <div className="new-product" style={{ marginBottom: 10 }}>
                 <Button type="primary" onClick={handleAddProduct}>
                     Add new product
                 </Button>
             </div>
             <Table
-                dataSource={dataSource}
-                size="small"
+                dataSource={[...products]}
+                size="medium"
                 pagination={{
                     pageSize: 15,
+                    style: {
+                        padding: '0 20px',
+                    },
                 }}
-                style={{
-                    marginTop: 10,
-                }}
+                rowKey={(record) => record.id}
+                loading={isLoading}
+                className={`${isDark ? 'dark-style' : 'light-style'}`}
+                bordered={true}
             >
                 <Column title="ID" dataIndex="id" key="id" width="10%" />
+                <Column
+                    title="Image"
+                    dataIndex="srcImage"
+                    key="srcImage"
+                    width="7%"
+                    render={(srcImage) => <Image width={40} src={srcImage} preview={false} />}
+                />
                 <Column
                     title="Name"
                     dataIndex="name"
                     key="productName"
-                    sorter={(a, b) => a.name.localeCompare(b.name)}
+                    width="20%"
+                    ellipsis={{
+                        showTitle: false,
+                    }}
+                    render={(name) => (
+                        <Tooltip placement="topLeft" title={name} color={'#777'}>
+                            {name}
+                        </Tooltip>
+                    )}
+                    filterDropdown={({ setSelectedKeys, selectedKeys, confirm }) => {
+                        return (
+                            <Input
+                                autoFocus
+                                placeholder="Search..."
+                                value={selectedKeys[0]}
+                                onChange={(e) => {
+                                    setSelectedKeys(e.target.value ? [e.target.value] : []);
+                                    confirm({ closeDropdown: false });
+                                }}
+                                onPressEnter={() => confirm()}
+                            ></Input>
+                        );
+                    }}
+                    filterIcon={() => {
+                        return <SearchOutlined />;
+                    }}
+                    onFilter={(value, record) => record.name.toLowerCase().startsWith(value.toLowerCase())}
                 />
                 <Column
                     title="Category"
@@ -73,7 +120,7 @@ const Products = () => {
                             value: "women's",
                         },
                     ]}
-                    onFilter={(value, record) => record.category.includes(value)}
+                    onFilter={(value, record) => record.category.startsWith(value)}
                     width="10%"
                 />
                 <Column
@@ -137,13 +184,12 @@ const Products = () => {
                 <Column
                     title="Action"
                     key="action"
-                    width="15%"
+                    width="7%"
                     align="center"
                     render={(_, record) => (
                         <Space size="small">
                             <Button size="small" onClick={(e) => handleEditProduct(record, e)}>
                                 <EditFilled />
-                                Edit
                             </Button>
                             <Popconfirm
                                 placement="topRight"
@@ -152,14 +198,13 @@ const Products = () => {
                             >
                                 <Button size="small">
                                     <DeleteFilled />
-                                    Delete
                                 </Button>
                             </Popconfirm>
                         </Space>
                     )}
                 />
             </Table>
-            <ProductForm ref={modalRef} mode={modeModal} />
+            <ProductForm ref={modalRef} mode={modeModal} reload={fetchProducts} />
         </>
     );
 };

@@ -3,8 +3,14 @@ import { Typography, Select, Row, Col } from 'antd';
 import OrderPerMonth from '../../chart/OrderPerMonth';
 import OrderInMonth from '../../chart/OrderInMonth';
 import OrderRevernueInMonth from '../../chart/OrderRevernueInMonth';
+import { useSelector } from 'react-redux';
+import DashboardCard from '../../chart/Card';
+import Orders from './Orders';
+// import OrderMap from '../../chart/OrderMap';
 
 const Dashboard = () => {
+    const THEME = useSelector((state) => state.theme.theme);
+    const isDark = Boolean(THEME === 'dark');
     const [month, setMonth] = useState(1);
     const handleChange = (value) => {
         setMonth(+value);
@@ -12,14 +18,16 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard">
-            <Row justify="start">
-                <Col span={14}>
+            <DashboardCard />
+            <Row justify="start" gutter={[16, { xs: 8, sm: 8, md: 16 }]}>
+                <Col xl={14} lg={24} xs={24} sm={24} md={24}>
                     <div
                         style={{
                             borderRadius: 10,
-                            boxShadow: '5px 5px 10px #ccc',
+                            boxShadow: '5px 5px 5px #999',
                             padding: '12px 20px',
-                            background: '#001529',
+                            background: isDark ? '#001529' : '#fff',
+                            marginTop: 20,
                         }}
                     >
                         <OrderPerMonth />
@@ -35,20 +43,20 @@ const Dashboard = () => {
                         </Typography.Title>
                     </div>
                 </Col>
-                <Col span={10}>
+                <Col xl={10} lg={24} xs={24} sm={24} md={24}>
                     <div
                         style={{
                             borderRadius: 10,
-                            boxShadow: '5px 5px 10px #ccc',
+                            boxShadow: '5px 5px 5px #999',
                             padding: '20px 20px',
-                            marginLeft: 10,
-                            background: '#001529',
+                            background: isDark ? '#001529' : '#fff',
+                            marginTop: 20,
                         }}
                     >
                         <Select
-                            placeholder="Select order's month"
+                            defaultValue="1"
                             style={{
-                                width: 250,
+                                width: '40%',
                                 marginLeft: 50,
                             }}
                             onChange={handleChange}
@@ -73,7 +81,13 @@ const Dashboard = () => {
             </Row>
             <div
                 className="revenue-per-month"
-                style={{ background: '#001529', marginTop: 20, borderRadius: 10, padding: 20 }}
+                style={{
+                    background: isDark ? '#001529' : '#fff',
+                    margin: '20px 0',
+                    borderRadius: 10,
+                    padding: 20,
+                    boxShadow: '5px 5px 5px #999',
+                }}
             >
                 <OrderRevernueInMonth />
                 <Typography.Title
@@ -87,7 +101,7 @@ const Dashboard = () => {
                     Number of order and revenue by month
                 </Typography.Title>
             </div>
-            {/* <OrderMap /> */}
+            <Orders />
         </div>
     );
 };

@@ -5,6 +5,7 @@ import { authReducer } from './authReducer';
 import { cartReducer } from './cartReducer';
 import { orderReducer } from './orderReducer';
 import { commentReducer } from './commentReducer';
+import themeReducer from './theme';
 
 const appReducers = combineReducers({
     productReducer: productReducer,
@@ -13,6 +14,7 @@ const appReducers = combineReducers({
     cartReducer: cartReducer,
     orderReducer: orderReducer,
     commentReducer: commentReducer,
+    theme: themeReducer,
 });
 
 export default appReducers;

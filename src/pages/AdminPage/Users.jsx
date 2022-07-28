@@ -1,9 +1,26 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Space, Table, Button, Popconfirm, message, Input } from 'antd';
 import { EditFilled, DeleteFilled, SearchOutlined } from '@ant-design/icons';
+import { useDispatch, useSelector } from 'react-redux';
 import UserForm from '../../Form/UserForm';
+import { UserTypes } from '../../redux/constants';
+import { actGetUsersSuccess } from '../../redux/actions/userAction';
+import { getAllUser } from '../../apis/usersApi';
 
 const Users = () => {
+    const THEME = useSelector((state) => state.theme.theme);
+    const isDark = Boolean(THEME === 'dark');
+    const dispatch = useDispatch();
+
+    const fetchUser = async () => {
+        try {
+            const users = await getAllUser();
+            return users;
+        } catch (error) {
+            console.error('>>> Get users fail', error);
+        }
+    };
+
     const modalRef = useRef(null);
     const [modeModal, setModeModal] = useState(null);
 
@@ -173,10 +190,16 @@ const Users = () => {
             <Table
                 dataSource={dataSource}
                 columns={columns}
-                size="small"
+                size="medium"
+                bordered
                 pagination={{
-                    pageSize: 20,
+                    pageSize: 15,
+                    style: {
+                        padding: '0 20px',
+                    },
                 }}
+                rowKey={(record) => record.id}
+                className={`${isDark ? 'dark-style' : 'light-style'}`}
             ></Table>
             <UserForm ref={modalRef} mode={modeModal} />
         </>

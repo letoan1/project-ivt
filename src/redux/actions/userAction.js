@@ -1,5 +1,25 @@
 import { UserTypes } from '../constants';
 
+export const actGetUsers = (users) => {
+    return {
+        type: UserTypes.GET_ALL_USERS,
+        payload: users,
+    };
+};
+
+export const actGetUsersSuccess = (payload) => {
+    return {
+        type: UserTypes.GET_USERS_SUCCESS,
+        payload,
+    };
+};
+
+export const actGetUsersFail = () => {
+    return {
+        type: UserTypes.GET_USERS_FAIL,
+    };
+};
+
 export const actCreateUser = (user) => {
     return {
         type: UserTypes.CREATE,

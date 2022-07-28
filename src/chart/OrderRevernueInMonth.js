@@ -13,7 +13,6 @@ const OrderRevernueInMonth = () => {
             order: w.filter((_, indexw) => indext === indexw)[0],
         };
     });
-    console.log(t);
     const data = t;
     const config = {
         data: [data, data],
