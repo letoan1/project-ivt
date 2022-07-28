@@ -12,16 +12,18 @@ import ProductDetail from './pages/UserPage/ProductDetail';
 import ProfilePage from './pages/UserPage/ProfilePage';
 import CartDetail from './pages/UserPage/CartDetail';
 import CheckOutPage from './pages/UserPage/CheckOutPage';
-import { AdminPage } from './pages';
-import { ROUTES } from './constants/Router';
+// import { AdminPage } from './pages';
+// import { ROUTES } from './constants/Router';
 import { actGetProfile } from './redux/actions/authAction';
 import OrderedPage from './pages/UserPage/OrderedPage';
 import ChangeProfilePage from './pages/UserPage/ChangeProfilePage';
+import { UpOutlined } from '@ant-design/icons';
 
 function App() {
     const dispatch = useDispatch();
     const { id } = useParams();
     const { isLoggIn } = useSelector((state) => state.auth);
+    const [showGoToTop, setShowGoToTop] = React.useState(false);
 
     const accessToken = JSON.parse(localStorage.getItem('accessToken')) || null;
     React.useEffect(() => {
@@ -29,6 +31,28 @@ function App() {
             dispatch(actGetProfile(accessToken));
         }
     }, [dispatch]);
+
+    React.useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY >= 200) {
+                setShowGoToTop(true);
+            } else {
+                setShowGoToTop(false);
+            }
+        };
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+    const handleClickGoToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        });
+    };
 
     return (
         <div className="App" style={{ position: 'relative' }}>
@@ -70,6 +94,22 @@ function App() {
                 </Route> */}
             </Switch>
             <Footer />
+            {showGoToTop && (
+                <button
+                    style={{
+                        position: 'fixed',
+                        right: 50,
+                        bottom: 20,
+                        padding: 10,
+                        backgroundColor: '#255c45',
+                        border: 'none',
+                        color: '#fff',
+                    }}
+                    onClick={() => handleClickGoToTop()}
+                >
+                    <UpOutlined />
+                </button>
+            )}
         </div>
     );
 }

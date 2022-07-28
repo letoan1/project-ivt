@@ -36,3 +36,19 @@
     font-weight: bold;
     color: $black-color;
 }
+
+@media only screen and (max-width: 46.1875em) {
+    .sale {
+        .sale__box {
+            padding: 0;
+        }
+        .sale__box--item {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-left: 0;
+        }
+    }
+}

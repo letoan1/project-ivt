@@ -16,6 +16,8 @@ export default function RegisterForm(props) {
     const [form] = Form.useForm();
     const [formLogin] = Form.useForm();
 
+    const defaultAvt = 'https://i.pinimg.com/236x/2b/f5/72/2bf572010d4a06b9a7265693f9ff85da.jpg';
+
     const handleRegister = (value) => {
         const user = {
             username: value.username,
@@ -24,6 +26,8 @@ export default function RegisterForm(props) {
             email: value.email,
             address: value.address,
             gender: value.gender,
+            avatar: defaultAvt,
+            isAdmin: false,
         };
         message.success('Đăng ký thành công !');
         dispatch(actCreateUser(user));
@@ -203,9 +207,9 @@ export default function RegisterForm(props) {
                                 hasFeedback
                             >
                                 <Select placeholder="Chọn giới tính của bạn..." allowClear>
-                                    <Option value="male">Male</Option>
-                                    <Option value="female">Female</Option>
-                                    <Option value="other">Other</Option>
+                                    <Option value="male">Nam</Option>
+                                    <Option value="female">Nữ</Option>
+                                    <Option value="other">Khác</Option>
                                 </Select>
                             </Form.Item>
 

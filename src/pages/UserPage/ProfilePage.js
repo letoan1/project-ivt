@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card } from 'antd';
+import { Button, Card, Image } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { actLogout } from '../../redux/actions/authAction';
@@ -26,8 +26,6 @@ export default function ProfilePage() {
         history.push(`/profile/${path}`);
     };
 
-    const defaultAvt = 'https://i.pinimg.com/236x/2b/f5/72/2bf572010d4a06b9a7265693f9ff85da.jpg';
-
     React.useEffect(() => {
         dispatch(actGetOrderUser(profile.id));
         // eslint-disable-next-line
@@ -43,7 +41,9 @@ export default function ProfilePage() {
             <div className="profile-container">
                 <div className="profile__info">
                     <div className="profile__info-avatar">
-                        <img src={profile?.avatar ? profile?.avatar : defaultAvt} alt="avatar" />
+                        <div style={{ maxHeight: '220px' }}>
+                            <Image src={profile?.avatar} />
+                        </div>
                         <div className="profile__utilities">
                             <p>{profile?.username}</p>
                             <p>{profile?.email}</p>

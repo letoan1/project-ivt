@@ -5,6 +5,7 @@ import React from 'react';
 import { Button, Form, Input, message, Radio, Space } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { actCreateOrder } from '../../redux/actions/orderAction';
+import { discountPrice } from '../../components/Sale/ItemContent';
 
 const valid = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
 const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -17,7 +18,7 @@ export default function CheckOutPage() {
     const [form] = Form.useForm();
 
     const totalMoney = cart.reduce((total, product) => {
-        total += product.price * product.quantity;
+        total += discountPrice(product) * product.quantity;
         return total;
     }, 0);
 
@@ -45,7 +46,7 @@ export default function CheckOutPage() {
             dispatch(actCreateOrder(order));
             message.success('Đặt hàng thành công !');
         } else {
-            message.error('Bạn cần phải đăng nhập trước khi thanh toán !');
+            message.warning('Bạn cần phải đăng nhập trước khi thanh toán !');
         }
 
         form.resetFields();
@@ -216,14 +217,14 @@ export default function CheckOutPage() {
                             {!!cart.length
                                 ? cart?.map((item) => (
                                       <div className="your-product-item" key={item?.id}>
-                                          <img src={item?.img} alt={item?.title} height={'60px'} width={'60px'} />
+                                          <img src={item?.srcImage} alt={item?.name} height={'60px'} width={'60px'} />
                                           <span style={{ fontSize: '14px', minWidth: '400px' }}>
-                                              {item?.title}
+                                              {item?.name}
                                               <strong> x {item?.quantity}</strong>
                                           </span>
                                           <span>
                                               <strong>
-                                                  {(item?.price * item?.quantity).toLocaleString('it-IT', {
+                                                  {(discountPrice(item) * item?.quantity).toLocaleString('it-IT', {
                                                       style: 'currency',
                                                       currency: 'VND',
                                                   })}

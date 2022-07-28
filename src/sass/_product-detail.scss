@@ -65,7 +65,7 @@
             flex-basis: 15%;
             padding-top: 20px;
 
-            & span {
+            & > span {
                 font-size: 20px;
                 font-weight: bold;
             }
@@ -78,7 +78,7 @@
         .detail__desc {
             flex-basis: 75%;
 
-            & span {
+            & > span {
                 font-size: 20px;
                 font-weight: bold;
             }
@@ -92,12 +92,35 @@
             }
         }
 
+        .info-rating {
+            padding: 20px;
+            background: #efefef;
+            margin-bottom: 20px;
+            border-radius: 20px;
+        }
+
+        .user-review {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        span.anticon.anticon-star.is-rating {
+            color: #fadb14;
+        }
+
+        .content-comment {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
         .rate {
-            margin-top: 16px;
-            padding: 10px;
-            width: 22%;
-            border: 1px solid #eee;
-            box-shadow: 1px 1px 10px rgb(0 0 0 / 15%);
+            font-size: 20px;
+        }
+
+        .form-comment {
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            padding: 20px;
         }
     }
 }

@@ -1,14 +1,14 @@
 import React from 'react';
+import { filTagProduct } from '../Carousel';
 import ItemContent from './ItemContent';
 
-export default function ListItem({ productSales }) {
-    const productLimit = productSales?.slice(0, 5);
+export default function ListItem({ tagFil, products }) {
     return (
         <>
-            {!!productLimit?.length
-                ? productLimit?.map((product) => (
-                      <ItemContent key={product.id} title={'THÊM VÀO GIỎ HÀNG'} product={product} />
-                  ))
+            {!!products?.length
+                ? filTagProduct(tagFil, products)
+                      .slice(0, 5)
+                      ?.map((product) => <ItemContent key={product.id} title={'THÊM VÀO GIỎ HÀNG'} product={product} />)
                 : 'Không có sản phẩm !'}
         </>
     );

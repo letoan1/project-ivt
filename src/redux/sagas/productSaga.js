@@ -10,18 +10,10 @@ import {
 
 function* getProductsHome() {
     yield put(actSetLoading());
-    const [resAllProducts, resProductSale, resProductNew, resProductBestSeller] = yield Promise.all([
-        getProducts(),
-        getProducts({ tags: 'sale' }),
-        getProducts({ tags: 'new' }),
-        getProducts({ tags: 'best-seller' }),
-    ]);
+    const [resAllProducts] = yield Promise.all([getProducts()]);
     yield put(
         actGetProductsHomeSuccess({
             products: resAllProducts.data,
-            productSale: resProductSale.data,
-            productNew: resProductNew.data,
-            productBestSeller: resProductBestSeller.data,
         }),
     );
 }

@@ -9,14 +9,18 @@ import { Col, Row, Slider } from 'antd';
 
 export default function ProductPage() {
     const dispatch = useDispatch();
-    const [inputValue, setInputValue] = React.useState(0);
+    const [inputValue, setInputValue] = React.useState([0, 10000000]);
     const { products } = useSelector((state) => state.productReducer);
     const [prodBrand, setProdBrand] = React.useState([]);
     const [visibleCheck, setVisibleCheck] = React.useState(true);
     const liRef = React.useRef();
 
+    const capitalizeFirstLetter = (string) => {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    };
+
     const check = (brand) => {
-        const result = products.filter((product) => product.trademark === brand);
+        const result = products.filter((product) => product?.brand === brand);
         setVisibleCheck(false);
         setProdBrand(result);
     };
@@ -30,16 +34,17 @@ export default function ProductPage() {
     }, [dispatch]);
 
     const onChange = (newValue) => {
+        console.log(newValue);
         setInputValue(newValue);
     };
 
     const uniqueIds = [];
 
     const unique = products.filter((element) => {
-        const isDuplicate = uniqueIds.includes(element.trademark);
+        const isDuplicate = uniqueIds.includes(element.brand);
 
         if (!isDuplicate) {
-            uniqueIds.push(element.trademark);
+            uniqueIds.push(element.brand);
             return true;
         }
 
@@ -77,7 +82,11 @@ export default function ProductPage() {
                     <div className="product__items">
                         {!!products.length
                             ? products
-                                  .filter((product) => product.price > parseInt(inputValue))
+                                  .filter(
+                                      (product) =>
+                                          product.price >= parseInt(inputValue[0]) &&
+                                          product.price < parseInt(inputValue[1]),
+                                  )
                                   .map((product) => <ItemContent key={product?.id} product={product} />)
                             : 'Không có sản phẩm !'}
                     </div>
@@ -85,7 +94,11 @@ export default function ProductPage() {
                     <div className="product__items">
                         {!!prodBrand.length
                             ? prodBrand
-                                  .filter((product) => product.price > parseInt(inputValue))
+                                  .filter(
+                                      (product) =>
+                                          product.price > parseInt(inputValue[0]) &&
+                                          product.price < parseInt(inputValue[1]),
+                                  )
                                   .map((product) => <ItemContent key={product?.id} product={product} />)
                             : 'Không có sản phẩm !'}
                     </div>
@@ -97,7 +110,7 @@ export default function ProductPage() {
                         <Col span={24}>
                             <Slider
                                 range
-                                defaultValue={[0, 200000]}
+                                defaultValue={[0, 500000]}
                                 min={0}
                                 step={5000}
                                 max={10000000}
@@ -115,8 +128,8 @@ export default function ProductPage() {
                         {!!unique?.length
                             ? unique?.map((product) => (
                                   <>
-                                      <li key={product?.id} ref={liRef} onClick={() => check(product?.trademark)}>
-                                          <a href="#">{product?.trademark}</a>
+                                      <li key={product?.id} ref={liRef} onClick={() => check(product?.brand)}>
+                                          <a href="#">{capitalizeFirstLetter(product?.brand)}</a>
                                       </li>
                                   </>
                               ))

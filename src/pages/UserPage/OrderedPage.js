@@ -28,9 +28,19 @@ export default function OrderedPage() {
             dataIndex: 'products',
             key: 'products',
             render: (_, item) => (
-                <div style={{ display: 'flex', alignItems: 'center' }} onClick={() => handleClickToDetail(item?.id)}>
-                    <img src={item?.img} alt={item?.title} width="60px" height="60px" style={{ margin: '0 10px' }} />
-                    <p>{item?.title}</p>
+                <div
+                    key={item?.id}
+                    style={{ display: 'flex', alignItems: 'center' }}
+                    onClick={() => handleClickToDetail(item?.id)}
+                >
+                    <img
+                        src={item?.srcImage}
+                        alt={item?.name}
+                        width="60px"
+                        height="60px"
+                        style={{ margin: '0 10px' }}
+                    />
+                    <p>{item?.name}</p>
                 </div>
             ),
         },
@@ -39,7 +49,7 @@ export default function OrderedPage() {
             dataIndex: 'price',
             key: 'price',
             render: (_, item) => (
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div key={item?.id} style={{ display: 'flex', alignItems: 'center' }}>
                     <p>{item?.price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</p>
                 </div>
             ),
@@ -49,7 +59,7 @@ export default function OrderedPage() {
             dataIndex: 'quantity',
             key: 'quantity',
             render: (_, item) => (
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div key={item?.id} style={{ display: 'flex', alignItems: 'center' }}>
                     <p>{item?.quantity}</p>
                 </div>
             ),
