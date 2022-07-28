@@ -6,9 +6,12 @@ import { ROUTES } from '../constants/Router';
 import '../sass/_admin.scss';
 import MainContent from '../components/AdminPage/MainContent';
 import Heading from './AdminPage/Header';
+import { useSelector } from 'react-redux';
 
 const AdminPage = () => {
-    const { Header, Content, Footer, Sider } = Layout;
+    const THEME = useSelector((state) => state.theme.theme);
+    const isDark = Boolean(THEME === 'dark');
+    const { Header, Content, Sider } = Layout;
     const [collapsed, setCollapsed] = useState(false);
     function getItem(label, key, icon) {
         return {
@@ -26,12 +29,18 @@ const AdminPage = () => {
     ];
     return (
         <Layout style={{ minHeight: '100vh' }}>
-            <Header className="site-header">
+            <Header className={`${isDark ? 'dark-style' : 'light-style'}`}>
                 <Heading />
             </Header>
             <Layout>
-                <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
-                    <Menu theme="dark" mode="inline" items={items} />
+                <Sider
+                    breakpoint="lg"
+                    collapsible
+                    collapsed={collapsed}
+                    onCollapse={(value) => setCollapsed(value)}
+                    className={`${isDark ? 'dark-style' : 'light-style'}`}
+                >
+                    <Menu theme={`${isDark ? 'dark' : 'light'}`} mode="inline" items={items} />
                 </Sider>
                 <Content className="site-main">
                     <MainContent />

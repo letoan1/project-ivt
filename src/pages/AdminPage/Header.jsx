@@ -1,9 +1,12 @@
 import React from 'react';
-import { Avatar, Image, message, Dropdown, Menu, Space } from 'antd';
+import { Avatar, message, Dropdown, Menu, Space } from 'antd';
 import { SettingOutlined, LogoutOutlined, CaretDownOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Heading = () => {
+    const THEME = useSelector((state) => state.theme.theme);
+    const isDark = Boolean(THEME === 'dark');
     let history = useHistory();
     const handleMenuClick = (e) => {
         console.log('click', e.key);
@@ -11,6 +14,8 @@ const Heading = () => {
             message.success('Change Avatar Success!');
         } else if (e.key === '2') {
             history.push('/');
+            localStorage.removeItem('admin_loggedIn');
+            message.success('Welcome home page');
         }
     };
     const menu = (
@@ -47,10 +52,17 @@ const Heading = () => {
                 <Dropdown overlay={menu} trigger={['click']} placement="bottomRight" arrow>
                     <span>
                         <Space>
-                            <span style={{ color: '#fff', fontSize: 18, marginLeft: 10, cursor: 'pointer' }}>
+                            <span
+                                style={{
+                                    color: isDark ? '#fff' : '#001529',
+                                    fontSize: 18,
+                                    marginLeft: 10,
+                                    cursor: 'pointer',
+                                }}
+                            >
                                 Admintrator
                             </span>
-                            <CaretDownOutlined style={{ color: '#fff' }} />
+                            <CaretDownOutlined style={{ color: isDark ? '#fff' : '#001529' }} />
                         </Space>
                     </span>
                 </Dropdown>

@@ -1,19 +1,21 @@
-.site-header {
-    color: white;
+.dark-style {
+    background: #001529;
 }
-.site__layout {
-    background: #999;
-    color: purple;
-    width: 100%;
-    .site__layout-main {
-        margin: 16px;
-    }
-    .site__layout-footer {
-        height: 48px;
-        background: #333;
-        color: purple;
-    }
+.light-style {
+    background: white;
 }
 .site-main {
     margin: 16px;
+}
+.red-card {
+    background: #f52338;
+}
+.blue-card {
+    background: #1495ff;
+}
+.green-card {
+    background: #28a720;
+}
+.yellow-card {
+    background: #ffc515;
 }

@@ -1,10 +1,13 @@
 import React, { useRef, useState } from 'react';
 import { Space, Table, Button, Popconfirm, message, Input } from 'antd';
 import { EditFilled, DeleteFilled, SearchOutlined } from '@ant-design/icons';
+import { useSelector } from 'react-redux';
 import OrderForm from '../../Form/OrderForm';
 
 const Orders = () => {
     const modalRef = useRef(null);
+    const THEME = useSelector((state) => state.theme.theme);
+    const isDark = Boolean(THEME === 'dark');
     const columns = [
         {
             title: 'Order Code',
@@ -200,7 +203,20 @@ const Orders = () => {
     };
     return (
         <>
-            <Table columns={columns} dataSource={dataSource} bordered size="small"></Table>
+            <Table
+                columns={columns}
+                dataSource={dataSource}
+                bordered
+                size="medium"
+                rowKey={(record) => record.id}
+                pagination={{
+                    pageSize: 15,
+                    style: {
+                        padding: '0 20px',
+                    },
+                }}
+                className={`${isDark ? 'dark-style' : 'light-style'}`}
+            ></Table>
             <OrderForm ref={modalRef} />
         </>
     );
