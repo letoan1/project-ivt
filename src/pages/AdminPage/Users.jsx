@@ -1,34 +1,29 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Space, Table, Button, Popconfirm, message, Input } from 'antd';
+import { Space, Table, Button, Popconfirm, message, Input, Image, Tooltip } from 'antd';
 import { EditFilled, DeleteFilled, SearchOutlined } from '@ant-design/icons';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import UserForm from '../../Form/UserForm';
-import { UserTypes } from '../../redux/constants';
-import { actGetUsersSuccess } from '../../redux/actions/userAction';
-import { getAllUser } from '../../apis/usersApi';
+import { getAllUser, deleteUser } from '../../apis/usersApi';
 
 const Users = () => {
     const THEME = useSelector((state) => state.theme.theme);
     const isDark = Boolean(THEME === 'dark');
-    const dispatch = useDispatch();
-
-    const fetchUser = async () => {
-        try {
-            const users = await getAllUser();
-            return users;
-        } catch (error) {
-            console.error('>>> Get users fail', error);
-        }
-    };
-
     const modalRef = useRef(null);
     const [modeModal, setModeModal] = useState(null);
+    const [dataSource, setDataSource] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const columns = [
         {
             title: 'ID',
             dataIndex: 'id',
             with: '10%',
+        },
+        {
+            title: 'Avatar',
+            dataIndex: 'avatar',
+            with: '7%',
+            render: (avatar) => <Image width={35} src={avatar} preview={false} />,
         },
         {
             title: 'Name',
@@ -54,26 +49,29 @@ const Users = () => {
             onFilter: (value, record) => record.username.toLowerCase().startsWith(value.toLowerCase()),
         },
         {
-            title: 'Date Created',
-            dataIndex: 'dateCreated',
+            title: 'Gender',
+            dataIndex: 'gender',
             with: '10%',
-            sorter: (a, b) => a.dateCreated - b.dateCreated,
         },
         {
             title: 'Role',
-            dataIndex: 'role',
+            dataIndex: 'isAdmin',
             with: '10%',
+            filterMultiple: false,
             filters: [
                 {
                     text: <span>Admin</span>,
-                    value: 'admin',
+                    value: true,
                 },
                 {
                     text: <span>Guest</span>,
-                    value: 'guest',
+                    value: false,
                 },
             ],
-            onFilter: (value, record) => record.role.includes(value),
+            onFilter: (value, record) => {
+                return record.isAdmin === value;
+            },
+            render: (isAdmin) => (isAdmin ? 'Admin' : 'Guest'),
         },
         {
             title: 'Email',
@@ -81,14 +79,19 @@ const Users = () => {
             with: '15%',
         },
         {
-            title: 'Phone Number',
-            dataIndex: 'phoneNumber',
+            title: 'Phone',
+            dataIndex: 'phone',
             with: '15%',
         },
         {
             title: 'Address',
             dataIndex: 'address',
             with: '20%',
+            render: (address) => (
+                <Tooltip placement="topLeft" title={address} color={'#777'}>
+                    {address}
+                </Tooltip>
+            ),
         },
         {
             title: 'Action',
@@ -112,63 +115,37 @@ const Users = () => {
             ),
         },
     ];
-    const [dataSource, setDataSource] = useState([
-        {
-            id: 1,
-            username: 'Minh Tung',
-            dateCreated: new Date().toLocaleDateString(),
-            role: 'admin',
-            email: 'minhtung@gmail.com',
-            phoneNumber: '0909090999',
-            address: 'Da Nang, Viet Nam',
-        },
-        {
-            id: 2,
-            username: 'Minh Tien',
-            dateCreated: new Date().toLocaleDateString(),
-            role: 'guest',
-            email: 'tienleminh@gmail.com',
-            phoneNumber: '0909090999',
-            address: 'Vung Tau, Viet Nam',
-        },
-        {
-            id: 3,
-            username: 'Vu Vuong',
-            dateCreated: new Date().toLocaleDateString(),
-            role: 'guest',
-            email: 'vuvuong@gmail.com',
-            phoneNumber: '0909090999',
-            address: 'Lao Cai, Viet Nam',
-        },
-        {
-            id: 4,
-            username: 'Van Chinh',
-            dateCreated: new Date().toLocaleDateString(),
-            role: 'guest',
-            email: 'chinhvang@gmail.com',
-            phoneNumber: '0909090999',
-            address: 'Quang Nam, Viet Nam',
-        },
-        {
-            id: 5,
-            username: 'Van Toan',
-            dateCreated: new Date().toLocaleDateString(),
-            role: 'admin',
-            email: 'toanvanle@gmail.com',
-            phoneNumber: '0909090999',
-            address: 'Quang Tri, Viet Nam',
-        },
-    ]);
-    const onDelete = (user, e) => {
-        e.preventDefault();
 
-        if (user.role === 'admin') {
+    const fetchUsers = async () => {
+        try {
+            setIsLoading(true);
+            const users = await getAllUser();
+            console.log('>>> Users', users);
+            setDataSource(users);
+            setIsLoading(false);
+            return users;
+        } catch (error) {
+            console.error('>>> Get users fail', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchUsers();
+    }, []);
+
+    const onDelete = async (user, e) => {
+        e.preventDefault();
+        setIsLoading(true);
+
+        if (user.isAdmin) {
             message.warning('Cannot delete ADMIN account');
+            setIsLoading(false);
             return;
         }
-        const newData = dataSource.filter((item) => item.id !== user.id);
-        setDataSource(newData);
-        message.success('Delete product success');
+        await deleteUser(user.id);
+        message.success('Delete user success');
+        fetchUsers();
+        setIsLoading(false);
     };
 
     const handleAddUser = () => {
@@ -191,6 +168,7 @@ const Users = () => {
                 dataSource={dataSource}
                 columns={columns}
                 size="medium"
+                loading={isLoading}
                 bordered
                 pagination={{
                     pageSize: 15,
@@ -201,7 +179,7 @@ const Users = () => {
                 rowKey={(record) => record.id}
                 className={`${isDark ? 'dark-style' : 'light-style'}`}
             ></Table>
-            <UserForm ref={modalRef} mode={modeModal} />
+            <UserForm ref={modalRef} mode={modeModal} reload={fetchUsers} />
         </>
     );
 };

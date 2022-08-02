@@ -1,6 +1,7 @@
 import React, { useRef, useState, forwardRef, useImperativeHandle } from 'react';
 import { Input, Form, Select, Button, InputNumber, Tag, Modal, Spin, message } from 'antd';
 import { createProduct, updateProduct } from '../apis/productsApi';
+import { useSelector } from 'react-redux';
 
 const ProductForm = forwardRef(({ mode, reload }, modalRef) => {
     const { TextArea } = Input;
@@ -8,6 +9,8 @@ const ProductForm = forwardRef(({ mode, reload }, modalRef) => {
     const { CheckableTag } = Tag;
     const [visible, setVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const THEME = useSelector((state) => state.theme.theme);
+    const isDark = Boolean(THEME === 'dark');
     const [form] = Form.useForm();
     const idProductRef = useRef(null);
 
@@ -140,9 +143,19 @@ const ProductForm = forwardRef(({ mode, reload }, modalRef) => {
             onOk={handleOkModal}
             onCancel={handleCloseModal}
             width="80%"
+            bodyStyle={{
+                backgroundColor: isDark ? '#001529' : '#fff',
+            }}
         >
             <Spin spinning={isLoading} size="large" tip="Loading...">
-                <Form {...layout} onFinish={onFinish} name="product-form" form={form} autoComplete="off">
+                <Form
+                    {...layout}
+                    onFinish={onFinish}
+                    name="product-form"
+                    form={form}
+                    autoComplete="off"
+                    className={isDark ? 'dark-style' : 'light-style'}
+                >
                     <Form.Item
                         name="name"
                         label="Product Name"
@@ -258,6 +271,8 @@ const ProductForm = forwardRef(({ mode, reload }, modalRef) => {
                         rules={[
                             {
                                 type: Array,
+                            },
+                            {
                                 required: true,
                             },
                         ]}
@@ -268,6 +283,7 @@ const ProductForm = forwardRef(({ mode, reload }, modalRef) => {
                                 checked={selectedTags.indexOf(tag) > -1}
                                 onChange={(checked) => handleChangeTag(tag, checked)}
                                 value={tag}
+                                style={{ color: isDark ? '#fff' : '#001529' }}
                             >
                                 {tag}
                             </CheckableTag>

@@ -1,5 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+<<<<<<< HEAD
 import React, { Suspense } from 'react';
+=======
+import React, { useState } from 'react';
+>>>>>>> 9efefdf (up the last freature)
 import { Switch, Route, useParams, Redirect, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -25,12 +29,13 @@ const ChangeProfilePage = React.lazy(() => import('./pages/UserPage/ChangeProfil
 
 function App() {
     const dispatch = useDispatch();
+<<<<<<< HEAD
     const { id } = useParams();
+=======
+>>>>>>> 9efefdf (up the last freature)
     const location = useLocation();
     const { isLoggIn } = useSelector((state) => state.auth);
     const [showGoToTop, setShowGoToTop] = React.useState(false);
-
-    const isAdmin = Boolean(localStorage.getItem('admin_loggedIn'));
     const accessToken = JSON.parse(localStorage.getItem('accessToken')) || null;
 
     React.useEffect(() => {

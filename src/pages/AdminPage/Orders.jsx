@@ -1,13 +1,25 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Space, Table, Button, Popconfirm, message, Input } from 'antd';
 import { EditFilled, DeleteFilled, SearchOutlined } from '@ant-design/icons';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import OrderForm from '../../Form/OrderForm';
+import { OrderTypes } from '../../redux/constants';
+import { deleteOrderById } from '../../apis/orderApi';
 
 const Orders = () => {
     const modalRef = useRef(null);
+    const dispatch = useDispatch();
+    const [isLoading, setIsLoading] = useState(false);
+    const orders = useSelector((state) => state.orderReducer.orders);
     const THEME = useSelector((state) => state.theme.theme);
     const isDark = Boolean(THEME === 'dark');
+
+    useEffect(() => {
+        fetchOrders();
+    }, []);
+    const fetchOrders = () => {
+        dispatch({ type: OrderTypes.GET_ORDERS_BY_USER });
+    };
     const columns = [
         {
             title: 'Order Code',
@@ -17,7 +29,7 @@ const Orders = () => {
         },
         {
             title: 'Customer',
-            dataIndex: 'customer',
+            dataIndex: 'username',
             filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
                 return (
                     <Input
@@ -35,42 +47,39 @@ const Orders = () => {
             filterIcon: () => {
                 return <SearchOutlined />;
             },
-            onFilter: (value, record) => record.customer.toLowerCase().startsWith(value.toLowerCase()),
+            onFilter: (value, record) => record.username.toLowerCase().startsWith(value.toLowerCase()),
         },
         {
             title: 'Order',
-            dataIndex: 'order',
+            dataIndex: 'cart',
             with: '15%',
-            filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
-                return (
-                    <Input
-                        autoFocus
-                        placeholder="Search..."
-                        value={selectedKeys[0]}
-                        onChange={(e) => {
-                            setSelectedKeys(e.target.value ? [e.target.value] : []);
-                            confirm({ closeDropdown: false });
-                        }}
-                        onPressEnter={() => confirm()}
-                    ></Input>
-                );
-            },
-            filterIcon: () => {
-                return <SearchOutlined />;
-            },
-            onFilter: (value, record) => record.order.toLowerCase().startsWith(value.toLowerCase()),
+            render: (cart) =>
+                cart.map((product) => (
+                    <p key={product.id}>
+                        {product.name} - {product.quantity}
+                    </p>
+                )),
         },
         {
             title: 'Delivery Date',
-            dataIndex: 'deliveryDate',
+            dataIndex: 'createAt',
             with: '15%',
-            sorter: (a, b) => a.deliveryDate - b.deliveryDate,
         },
         {
             title: 'Delivery Pricing',
-            dataIndex: 'deliveryPrice',
+            dataIndex: 'totalMoney',
             with: '15%',
-            sorter: (a, b) => a.deliveryPrice - b.deliveryPrice,
+            sorter: (a, b) => a.totalMoney - b.totalMoney,
+            render: (totalMoney) =>
+                totalMoney.toLocaleString('it-IT', {
+                    style: 'currency',
+                    currency: 'VND',
+                }),
+        },
+        {
+            title: 'Payment Method',
+            dataIndex: 'paymentMethod',
+            with: '15%',
         },
         {
             title: 'Delivery Status',
@@ -117,6 +126,7 @@ const Orders = () => {
         {
             title: 'Address',
             dataIndex: 'address',
+            width: '12%',
         },
         {
             title: 'Action',
@@ -141,72 +151,37 @@ const Orders = () => {
         },
     ];
 
-    const [dataSource, setDataSource] = useState([
-        {
-            id: 1,
-            customer: 'Minh Tung',
-            order: 'Dior Sauvage',
-            deliveryDate: new Date().toLocaleDateString(),
-            deliveryPrice: '2 300 000',
-            deliveryStatus: 'delivered',
-            address: 'Da Nang, Viet nam',
-        },
-        {
-            id: 2,
-            customer: 'Van Toan',
-            order: 'Gucci',
-            deliveryDate: new Date().toLocaleDateString(),
-            deliveryPrice: '2 300 000',
-            deliveryStatus: 'shipped',
-            address: 'Da Nang, Viet nam',
-        },
-        {
-            id: 3,
-            customer: 'Tien Linh',
-            order: 'Versace',
-            deliveryDate: new Date().toLocaleDateString(),
-            deliveryPrice: '2 300 000',
-            deliveryStatus: 'shipped',
-            address: 'Da Nang, Viet nam',
-        },
-        {
-            id: 4,
-            customer: 'Cong Phuong',
-            order: 'Chanel',
-            deliveryDate: new Date().toLocaleDateString(),
-            deliveryPrice: '2 300 000',
-            deliveryStatus: 'inTransit',
-            address: 'Da Nang, Viet nam',
-        },
-        {
-            id: 5,
-            customer: 'Cong Phuong',
-            order: 'Chanel',
-            deliveryDate: new Date().toLocaleDateString(),
-            deliveryPrice: '2 300 000',
-            deliveryStatus: 'canceled',
-            address: 'Da Nang, Viet nam',
-        },
-    ]);
+    const NewOrders = orders.map((order) => {
+        return {
+            ...order,
+            deliveryStatus: order.deliveryStatus === undefined ? 'shipped' : order.deliveryStatus,
+        };
+    });
 
-    const onDelete = (id, e) => {
+    const onDelete = async (id, e) => {
         e.preventDefault();
-        const newData = dataSource.filter((item) => item.id !== id);
-        setDataSource(newData);
-        message.success('Delete product success');
+        setIsLoading(true);
+        try {
+            await deleteOrderById(id);
+            message.success('Delete order success');
+        } catch (error) {
+            message.error('Delete order fail');
+            console.error(error);
+        }
+        setIsLoading(false);
     };
 
     const onEdit = (order, e) => {
         e.preventDefault();
-        console.log(order);
         modalRef.current?.handleOpenModal(order);
     };
     return (
         <>
             <Table
                 columns={columns}
-                dataSource={dataSource}
+                dataSource={NewOrders}
                 bordered
+                loading={isLoading}
                 size="medium"
                 rowKey={(record) => record.id}
                 pagination={{
@@ -217,7 +192,7 @@ const Orders = () => {
                 }}
                 className={`${isDark ? 'dark-style' : 'light-style'}`}
             ></Table>
-            <OrderForm ref={modalRef} />
+            <OrderForm ref={modalRef} reload={fetchOrders} />
         </>
     );
 };

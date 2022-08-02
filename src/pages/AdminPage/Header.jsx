@@ -1,18 +1,22 @@
 import React from 'react';
 import { Avatar, message, Dropdown, Menu, Space } from 'antd';
-import { SettingOutlined, LogoutOutlined, CaretDownOutlined } from '@ant-design/icons';
+import { SettingOutlined, LogoutOutlined, CaretDownOutlined, AlignLeftOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { actLogout } from '../../redux/actions/authAction';
 
 const Heading = () => {
+    const dispatch = useDispatch();
     const THEME = useSelector((state) => state.theme.theme);
     const isDark = Boolean(THEME === 'dark');
     let history = useHistory();
     const handleMenuClick = (e) => {
-        console.log('click', e.key);
-        if (e.key === '1') {
+        if (e.key === '0') {
+            history.push('/');
+        } else if (e.key === '1') {
             message.success('Change Avatar Success!');
         } else if (e.key === '2') {
+            dispatch(actLogout());
             history.push('/');
             localStorage.removeItem('admin_loggedIn');
             message.success('Welcome home page');
@@ -22,6 +26,11 @@ const Heading = () => {
         <Menu
             onClick={handleMenuClick}
             items={[
+                {
+                    label: 'Home Page',
+                    key: '0',
+                    icon: <AlignLeftOutlined />,
+                },
                 {
                     label: 'Change Avatar',
                     key: '1',

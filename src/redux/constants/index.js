@@ -14,9 +14,6 @@ export const ProductTypes = {
 };
 
 export const UserTypes = {
-    GET_ALL_USERS: 'GET_ALL_USERS',
-    GET_USERS_SUCCESS: 'GET_USERS_SUCCESS',
-    GET_USERS_FAIL: 'GET_USERS_FAIL',
     CREATE: 'CREATE_USER',
     CREATE_FAIL: 'CREATE_USER_FAIL',
     CREATE_SUCCESS: 'CREATE_USER_SUCCESS',

@@ -36,7 +36,7 @@ const Dashboard = () => {
                             style={{
                                 textAlign: 'center',
                                 margin: 10,
-                                color: 'white',
+                                color: isDark ? '#fff' : '#001529',
                             }}
                         >
                             Volume of products sold per month
@@ -95,7 +95,7 @@ const Dashboard = () => {
                     style={{
                         textAlign: 'center',
                         margin: 10,
-                        color: 'white',
+                        color: isDark ? '#fff' : '#001529',
                     }}
                 >
                     Number of order and revenue by month

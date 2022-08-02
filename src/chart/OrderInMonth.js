@@ -1,8 +1,11 @@
 import React from 'react';
 import { Pie } from '@ant-design/plots';
 import { OrderData } from './Data';
+import { useSelector } from 'react-redux';
 
 const OrderInMonth = ({ month }) => {
+    const THEME = useSelector((state) => state.theme.theme);
+    const isDark = Boolean(THEME === 'dark');
     const dataInMonth = OrderData.filter((data) => data.month === month);
     const orderInMonth = dataInMonth.map((data) => data.order);
     const totalOrder = orderInMonth.reduce((total, order) => total + order, 0);
@@ -46,7 +49,7 @@ const OrderInMonth = ({ month }) => {
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     fontSize: 22,
-                    color: '#fff',
+                    color: isDark ? '#fff' : '#001529',
                 },
                 content: 'Order percent in Month (%)',
             },
