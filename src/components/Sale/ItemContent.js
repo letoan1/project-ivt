@@ -43,7 +43,7 @@ export default function ItemContent({ product }) {
     };
 
     return (
-        <div className="card-content" style={{ position: 'relative' }}>
+        <div className="card-content card-tabs" style={{ position: 'relative' }}>
             {discount !== 0 ? <p className="sale-icon">{`-${product.discount}%`}</p> : null}
             <Card
                 hoverable

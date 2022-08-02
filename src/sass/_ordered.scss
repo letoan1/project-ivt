@@ -19,7 +19,10 @@
         align-items: center;
         gap: 30px;
     }
+}
 
-    .order-item {
+@media only screen and (max-width: 46.1875em) {
+    .ordered-page {
+        padding: 10px;
     }
 }

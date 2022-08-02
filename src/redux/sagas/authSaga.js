@@ -1,5 +1,5 @@
 import { logIn } from '../../apis/authApi';
-import { getUserByUsername } from '../../apis/usersApi';
+import { getUserByUsername, checkUserLogin } from '../../apis/usersApi';
 import { AuthTypes } from '../constants';
 import { call, put, takeEvery, takeLeading } from 'redux-saga/effects';
 import {
@@ -15,7 +15,7 @@ function* login({ payload }) {
     try {
         const { username, password } = payload;
         const token = yield call(logIn, username, password);
-        const profile = yield call(getUserByUsername, username, password);
+        const profile = yield call(checkUserLogin, username, password);
         yield put(actLoginSuccess({ token, profile }));
     } catch (error) {
         yield put(actLoginFail());

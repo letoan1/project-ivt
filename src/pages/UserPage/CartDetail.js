@@ -73,6 +73,7 @@ export default function CartDetail() {
             dataIndex: 'quantity',
             key: 'quantity',
             render: (_, item) => <span key={item?.id}>{item?.quantity}</span>,
+            responsive: ['md'],
         },
         {
             title: 'TẠM TÍNH',
@@ -86,6 +87,7 @@ export default function CartDetail() {
                     })}
                 </span>
             ),
+            responsive: ['md'],
         },
     ];
 

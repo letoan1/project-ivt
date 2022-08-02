@@ -48,6 +48,7 @@ export default function OrderedPage() {
             title: 'ĐƠN GIÁ',
             dataIndex: 'price',
             key: 'price',
+            sorter: (a, b) => a.price - b.price,
             render: (_, item) => (
                 <div key={item?.id} style={{ display: 'flex', alignItems: 'center' }}>
                     <p>{item?.price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}</p>
@@ -63,6 +64,7 @@ export default function OrderedPage() {
                     <p>{item?.quantity}</p>
                 </div>
             ),
+            responsive: ['md'],
         },
     ];
 

@@ -25,13 +25,13 @@ export default function HomePage() {
                 <Sale tagFil={'women'} products={products} isLoading={isLoading} />
                 <Voucher />
                 <Divider divider={'SẢN PHẨM MỚI NHẤT'} />
-                <Carousel tagFil={'new'} products={products} />
+                <Carousel tagFil={'new'} products={products} isLoading={isLoading} />
                 <Divider divider={'SẢN PHẨM BÁN CHẠY'} />
-                <Carousel tagFil={'best seller'} products={products} />
+                <Carousel tagFil={'best seller'} products={products} isLoading={isLoading} />
                 <Divider divider={'SẢN PHẨM KHUYẾN MÃI'} />
-                <Carousel tagFil={'sale-off'} products={products} />
+                <Carousel tagFil={'sale-off'} products={products} isLoading={isLoading} />
                 <Divider divider={'SẢN PHẨM GỢI Ý'} />
-                <TabsProduct products={products} />
+                <TabsProduct products={products} isLoading={isLoading} />
             </div>
         </>
     );

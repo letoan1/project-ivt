@@ -16,6 +16,22 @@ export default function CheckOutPage() {
     const { isLoggIn, profile } = useSelector((state) => state.auth);
     const [paymentMethod, setPaymentMethod] = React.useState(1);
     const [form] = Form.useForm();
+    const [loadings, setLoadings] = React.useState([]);
+
+    const enterLoading = (index) => {
+        setLoadings((prevLoadings) => {
+            const newLoadings = [...prevLoadings];
+            newLoadings[index] = true;
+            return newLoadings;
+        });
+        setTimeout(() => {
+            setLoadings((prevLoadings) => {
+                const newLoadings = [...prevLoadings];
+                newLoadings[index] = false;
+                return newLoadings;
+            });
+        }, 2000);
+    };
 
     const totalMoney = cart.reduce((total, product) => {
         total += discountPrice(product) * product.quantity;
@@ -43,8 +59,10 @@ export default function CheckOutPage() {
         };
 
         if (isLoggIn) {
-            dispatch(actCreateOrder(order));
-            message.success('Đặt hàng thành công !');
+            setTimeout(() => {
+                dispatch(actCreateOrder(order));
+                message.success('Đặt hàng thành công !');
+            }, 2000);
         } else {
             message.warning('Bạn cần phải đăng nhập trước khi thanh toán !');
         }
@@ -84,7 +102,7 @@ export default function CheckOutPage() {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input your username!',
+                                    message: 'Không được bỏ trống trường này !',
                                 },
                             ]}
                         >
@@ -115,7 +133,7 @@ export default function CheckOutPage() {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input your address !',
+                                    message: 'Không được bỏ trống trường này !',
                                 },
                             ]}
                         >
@@ -141,7 +159,7 @@ export default function CheckOutPage() {
 
                         <Radio.Group value={paymentMethod} onChange={onChangeRadio} width="100%">
                             <Space direction="vertical">
-                                <Radio value={1}>Thanh toán tại nhà (COD)</Radio>
+                                <Radio value={1}>Thanh toán khi nhận hàng (COD)</Radio>
                                 <Radio value={2}>
                                     Chuyển khoản ngân hàng
                                     {paymentMethod === 2 ? (
@@ -204,7 +222,12 @@ export default function CheckOutPage() {
                                 span: 16,
                             }}
                         ></Form.Item>
-                        <Button className="btn-add-to-card checkout-btn" htmlType="submit">
+                        <Button
+                            className="btn-add-to-card checkout-btn"
+                            htmlType="submit"
+                            loading={loadings[0]}
+                            onClick={() => enterLoading(0)}
+                        >
                             ĐẶT HÀNG
                         </Button>
                     </Form>
