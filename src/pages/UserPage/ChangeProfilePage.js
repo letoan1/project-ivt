@@ -13,20 +13,38 @@ export default function ChangeProfilePage() {
     const dispatch = useDispatch();
     const { profile } = useSelector((state) => state.auth);
     const [form] = Form.useForm();
-
+    const [loadings, setLoadings] = React.useState([]);
+    const [isChangePassword, setIsChangePassword] = React.useState(false);
     const fieldProfile = { ...profile };
     delete fieldProfile.password;
+
+    const enterLoading = (index) => {
+        setLoadings((prevLoadings) => {
+            const newLoadings = [...prevLoadings];
+            newLoadings[index] = true;
+            return newLoadings;
+        });
+        setTimeout(() => {
+            setLoadings((prevLoadings) => {
+                const newLoadings = [...prevLoadings];
+                newLoadings[index] = false;
+                return newLoadings;
+            });
+        }, 2000);
+    };
 
     const handleUpdateProfile = (values) => {
         const payload = {
             username: values.username,
             email: values.email,
-            password: values.password,
+            password: values.password || profile?.password,
             phone: values.phone,
             address: values.address,
             gender: values.gender,
             avatar: values.avatar,
+            isAdmin: profile?.isAdmin,
         };
+
         dispatch(actUpdateUser({ id: profile.id, payload: payload }));
         form.resetFields();
     };
@@ -74,68 +92,80 @@ export default function ChangeProfilePage() {
                         <Input />
                     </Form.Item>
 
-                    <Form.Item
-                        label="Mật khẩu cũ"
-                        name="old-password"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Không được bỏ trống trường này !',
-                            },
-                            ({ getFieldValue }) => ({
-                                validator(_, value) {
-                                    if (!value || `${profile?.password}` === value) {
-                                        return Promise.resolve();
-                                    }
-                                    return Promise.reject('Mật khẩu cũ không chính xác !');
-                                },
-                            }),
-                        ]}
-                        hasFeedback
+                    <Button
+                        className="btn-add-to-card "
+                        onClick={() => setIsChangePassword(!isChangePassword)}
+                        style={{ marginBottom: '16px' }}
                     >
-                        <Input.Password />
-                    </Form.Item>
+                        ĐỔI MẬT KHẨU
+                    </Button>
 
-                    <Form.Item
-                        label="Mật khẩu"
-                        name="password"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Không được bỏ trống trường này !',
-                            },
-                            {
-                                min: 6,
-                                message: 'Mật khẩu phải có ít nhất 6 ký tự !',
-                            },
-                        ]}
-                        hasFeedback
-                    >
-                        <Input.Password />
-                    </Form.Item>
+                    {isChangePassword && (
+                        <>
+                            <Form.Item
+                                label="Mật khẩu cũ"
+                                name="old-password"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Không được bỏ trống trường này !',
+                                    },
+                                    ({ getFieldValue }) => ({
+                                        validator(_, value) {
+                                            if (!value || `${profile?.password}` === value) {
+                                                return Promise.resolve();
+                                            }
+                                            return Promise.reject('Mật khẩu cũ không chính xác !');
+                                        },
+                                    }),
+                                ]}
+                                hasFeedback
+                            >
+                                <Input.Password />
+                            </Form.Item>
 
-                    <Form.Item
-                        label="Nhập lại mật khẩu"
-                        name="retype-password"
-                        dependencies={['password']}
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Không được bỏ trống trường này !',
-                            },
-                            ({ getFieldValue }) => ({
-                                validator(_, value) {
-                                    if (!value || getFieldValue('password') === value) {
-                                        return Promise.resolve();
-                                    }
-                                    return Promise.reject('Mật khẩu nhập lại không chính xác !');
-                                },
-                            }),
-                        ]}
-                        hasFeedback
-                    >
-                        <Input.Password />
-                    </Form.Item>
+                            <Form.Item
+                                label="Mật khẩu"
+                                name="password"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Không được bỏ trống trường này !',
+                                    },
+                                    {
+                                        min: 6,
+                                        message: 'Mật khẩu phải có ít nhất 6 ký tự !',
+                                    },
+                                ]}
+                                hasFeedback
+                            >
+                                <Input.Password />
+                            </Form.Item>
+
+                            <Form.Item
+                                label="Nhập lại mật khẩu"
+                                name="retype-password"
+                                dependencies={['password']}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Không được bỏ trống trường này !',
+                                    },
+                                    ({ getFieldValue }) => ({
+                                        validator(_, value) {
+                                            if (!value || getFieldValue('password') === value) {
+                                                return Promise.resolve();
+                                            }
+                                            return Promise.reject('Mật khẩu nhập lại không chính xác !');
+                                        },
+                                    }),
+                                ]}
+                                hasFeedback
+                            >
+                                <Input.Password />
+                            </Form.Item>
+                        </>
+                    )}
 
                     <Form.Item label="Địa chỉ" name="address" hasFeedback>
                         <Input />
@@ -176,7 +206,12 @@ export default function ChangeProfilePage() {
                             span: 16,
                         }}
                     >
-                        <Button className="btn-add-to-card " htmlType="submit">
+                        <Button
+                            className="btn-add-to-card "
+                            htmlType="submit"
+                            loading={loadings[0]}
+                            onClick={() => enterLoading(0)}
+                        >
                             LƯU THAY ĐỔI
                         </Button>
                     </Form.Item>

@@ -28,3 +28,13 @@
         }
     }
 }
+
+@media only screen and (max-width: 46.1875em) {
+    .cart_detail {
+        padding: 10px;
+
+        .cart__detail-col {
+            flex-direction: column;
+        }
+    }
+}

@@ -43,6 +43,10 @@ export default function Header() {
         setVisibleSearchResult(false);
     };
 
+    const handleLinkToAdmin = () => {
+        history.push('/admin');
+    };
+
     const handleClickCategory = () => {
         history.push('/products');
     };
@@ -154,7 +158,11 @@ export default function Header() {
                             )}
 
                             <span className="masthead__advise"></span>
-                            <h3>TƯ VẤN TRỰC TIẾP</h3>
+                            {profile?.isAdmin ? (
+                                <h3 onClick={handleLinkToAdmin}>QUẢN LÝ ADMIN PAGE</h3>
+                            ) : (
+                                <h3>LIÊN HỆ TƯ VẤN</h3>
+                            )}
                         </div>
                         <div className="masthead__login">
                             {!isLoggIn ? (

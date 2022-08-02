@@ -13,10 +13,11 @@
     }
 
     & .product__items {
+        position: relative;
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 20px;
-        padding: 20px;
+        padding: 20px 20px 70px 20px;
         flex-basis: 80%;
     }
 
@@ -34,14 +35,25 @@
             height: 3px;
             background-color: rgba(0, 0, 0, 0.1);
         }
+
         & li {
             padding: 10px 0;
             list-style: none;
             border-bottom: 1px solid #334862;
 
             & a {
+                padding: 0 5px;
                 color: #334862;
                 font-size: 16px;
+            }
+        }
+
+        .active-style {
+            background: $background;
+            color: $white-color;
+
+            a {
+                color: $white-color;
             }
         }
     }
@@ -55,4 +67,14 @@
         position: relative;
         left: -45%;
     }
+
+    .non-active-style {
+        background: transparent;
+    }
+}
+
+.ant-pagination {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
 }

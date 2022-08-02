@@ -1,8 +1,8 @@
 import '../../sass/_register.scss';
 import { actCreateUser } from '../../redux/actions/userAction';
 
-import { Button, Form, Input, Select, Modal, message } from 'antd';
 import React from 'react';
+import { Button, Form, Input, Select, Modal, message } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { actLogin } from '../../redux/actions/authAction';
 const { Option } = Select;
@@ -63,7 +63,7 @@ export default function RegisterForm(props) {
     return (
         <div className="register">
             <Modal
-                title={'Register Member & Login'}
+                title={'Đăng nhập & Đăng ký'}
                 centered
                 footer={null}
                 mask={true}

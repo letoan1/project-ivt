@@ -14,6 +14,7 @@ export const authReducer = (state = initialState, action) => {
             const profile = action.payload.profile;
             const accessToken = action.payload.token;
             localStorage.setItem('accessToken', JSON.stringify(accessToken));
+            profile.isAdmin && localStorage.setItem('admin_loggedIn', '****');
             state = {
                 profile: profile,
                 isLoggIn: true,
@@ -36,6 +37,7 @@ export const authReducer = (state = initialState, action) => {
 
         case AuthTypes.LOGOUT: {
             localStorage.removeItem('accessToken');
+            localStorage.removeItem('admin_loggedIn');
             return { ...initialState };
         }
 

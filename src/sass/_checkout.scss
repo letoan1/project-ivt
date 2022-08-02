@@ -52,3 +52,13 @@
         margin-bottom: 16px;
     }
 }
+
+@media only screen and (max-width: 46.1875em) {
+    .checkout {
+        padding: 10px;
+    }
+
+    .checkout__col {
+        flex-direction: column;
+    }
+}

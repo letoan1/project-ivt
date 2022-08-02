@@ -22,6 +22,9 @@ const productReducer = (state = initialState, action) => {
             window.location.href = '/';
             return { ...state, isLoading: false };
         }
+        case ProductTypes.SET_IS_LOADING: {
+            return { ...state, isLoading: true };
+        }
         default:
             return { ...state };
     }
