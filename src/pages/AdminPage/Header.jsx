@@ -17,8 +17,9 @@ const Heading = () => {
             message.success('Change Avatar Success!');
         } else if (e.key === '2') {
             dispatch(actLogout());
-            history.push('/');
             localStorage.removeItem('admin_loggedIn');
+            localStorage.removeItem('accessToken');
+            history.push('/');
             message.success('Welcome home page');
         }
     };
