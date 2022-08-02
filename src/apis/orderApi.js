@@ -11,3 +11,12 @@ export const getOrderByUser = async (id) => {
     });
     return data;
 };
+
+export const deleteOrderById = (id) => {
+    return axiosClient.delete(`orders/${id}`);
+};
+
+export const updateOrder = async (id, order) => {
+    const res = await axiosClient.put(`orders/${id}`, { ...order });
+    return res;
+};

@@ -10,8 +10,10 @@ const Setting = () => {
         const theme = e.target.value;
         if (theme === 'dark') {
             dispatch({ type: 'theme/dark' });
+            localStorage.setItem('theme', 'dark');
         } else {
             dispatch({ type: 'theme/light' });
+            localStorage.setItem('theme', 'light');
         }
     };
     return (

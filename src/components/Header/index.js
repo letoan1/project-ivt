@@ -37,7 +37,7 @@ export default function Header() {
 
         return false;
     });
-
+    console.log('asd');
     const handleClick = (id) => {
         history.replace(`/products/${id}`);
         setVisibleSearchResult(false);

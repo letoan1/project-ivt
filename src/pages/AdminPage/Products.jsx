@@ -104,7 +104,7 @@ const Products = () => {
                     filterIcon={() => {
                         return <SearchOutlined />;
                     }}
-                    onFilter={(value, record) => record.name.toLowerCase().startsWith(value.toLowerCase())}
+                    onFilter={(value, record) => record.name.toLowerCase().includes(value.toLowerCase())}
                 />
                 <Column
                     title="Category"
@@ -166,14 +166,14 @@ const Products = () => {
                     key="price"
                     sorter={(a, b) => a.price - b.price}
                     width="10%"
+                    render={(price) =>
+                        price.toLocaleString('it-IT', {
+                            style: 'currency',
+                            currency: 'VND',
+                        })
+                    }
                 />
-                <Column
-                    title="Discount (%)"
-                    dataIndex="discount"
-                    key="discount"
-                    sorter={(a, b) => a.discount - b.discount}
-                    width="10%"
-                />
+                <Column title="Discount (%)" dataIndex="discount" key="discount" width="10%" />
                 <Column
                     title="Capacity (ml)"
                     dataIndex="capacity"

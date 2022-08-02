@@ -1,5 +1,5 @@
 import { call, put, takeLatest, takeLeading } from '@redux-saga/core/effects';
-import { createUser, updateUser, getAllUser } from '../../apis/usersApi';
+import { createUser, updateUser } from '../../apis/usersApi';
 import { UserTypes } from '../constants';
 import { actGetProfileSuccess } from '../../redux/actions/authAction';
 import {
@@ -8,8 +8,6 @@ import {
     actSetLoading,
     actClearNotification,
     actUpdateUserSuccess,
-    actGetUsersSuccess,
-    actGetUsersFail,
 } from '../../redux/actions/userAction';
 
 function* onCreateUser({ payload }) {
@@ -21,21 +19,6 @@ function* onCreateUser({ payload }) {
         } else throw new Error();
     } catch (error) {
         yield put(actCreateUserFail());
-    } finally {
-        yield put(actClearNotification());
-    }
-}
-
-function* getAllUsers() {
-    yield put(actSetLoading());
-    try {
-        const data = yield call(getAllUser());
-        console.log('>>>>>res', data);
-        if (data.status === 201) {
-            yield put(actGetUsersSuccess(data));
-        } else throw new Error();
-    } catch (error) {
-        yield put(actGetUsersFail());
     } finally {
         yield put(actClearNotification());
     }
@@ -66,15 +49,5 @@ function* watchCreateUser() {
     yield takeLeading(UserTypes.CREATE, onCreateUser);
 }
 
-function* watchGetUsers() {
-    yield takeLeading(UserTypes.GET_ALL_USERS, getAllUsers);
-}
-
-const Test = watchGetUsers();
-console.log('>>>>test saga', Test.next());
-console.log('>>>>test saga', Test.next());
-console.log('>>>>test saga', Test.next());
-console.log('>>>>test saga', Test.next());
-console.log('>>>>test saga', Test.next());
 // eslint-disable-next-line
-export default [watchCreateUser(), watchOnUpdateUser(), watchGetUsers()];
+export default [watchCreateUser(), watchOnUpdateUser()];
