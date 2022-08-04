@@ -53,6 +53,7 @@ export default function CheckOutPage() {
             idUser: profile.id,
             cart: [...cart],
             totalMoney: totalMoney,
+            deliveryStatus: 'shipped',
             paymentMethod:
                 paymentMethod === 1 ? 'Ship COD' : paymentMethod === 2 ? 'Thanh toán thẻ ngân hàng' : 'Thanh toán MoMo',
             ...infoShip,

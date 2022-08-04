@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { Suspense, useState } from 'react';
+import React, { Suspense } from 'react';
 import { Switch, Route, useParams, Redirect, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -35,9 +35,7 @@ function App() {
     React.useEffect(() => {
         if (accessToken) {
             dispatch(actGetProfile(accessToken));
-        }
-
-        if (isAdmin) {
+        } else if (isAdmin) {
             dispatch(actGetProfile(isAdmin));
         }
     }, [dispatch]);

@@ -182,11 +182,12 @@ export default function ProductDetail() {
                             <p>{productDetail?.description}</p>
                             <span>Thông tin về nước hoa {productDetail?.name}</span>
                             <ul>
-                                <li>Nhóm nước hoa: Hương biển, Hương gỗ</li>
-                                <li>Giới tính: Nam</li>
-                                <li>Năm ra mắt: 2018</li>
-                                <li>Nhà pha chế: Alberto Morrilas</li>
-                                <li>Nồng độ: EDP</li>
+                                <li>Giới tính: {productDetail.category}</li>
+                                <li>
+                                    Hãng sản xuất:{' '}
+                                    {productDetail?.brand?.charAt(0).toUpperCase() + productDetail?.brand?.slice(1)}
+                                </li>
+                                <li>Dung tích: {productDetail.capacity}ml</li>
                             </ul>
 
                             <span>Đánh giá {productDetail?.name}</span>

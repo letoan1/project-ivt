@@ -5,7 +5,7 @@ import ItemContent from '../../components/Sale/ItemContent';
 import { actGetProductsHome } from '../../redux/actions/productAction';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { Col, Row, Slider, Pagination } from 'antd';
+import { Col, Row, Slider } from 'antd';
 import ListSkeleton from '../../components/Skeleton/ListSkeleton';
 
 export default function ProductPage() {
@@ -15,15 +15,12 @@ export default function ProductPage() {
     const [prodBrand, setProdBrand] = React.useState([]);
     const [visibleCheck, setVisibleCheck] = React.useState(true);
     const [isActive, setIsActive] = React.useState();
-    const [total, setTotal] = React.useState('');
-    const [page, setPage] = React.useState(1);
-    const postPerPage = 12;
 
     const capitalizeFirstLetter = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     };
 
-    const check = (brand) => {
+    const checkBrand = (brand) => {
         const result = products.filter((product) => product?.brand === brand);
         setIsActive(brand);
         setVisibleCheck(false);
@@ -37,12 +34,8 @@ export default function ProductPage() {
 
     React.useEffect(() => {
         dispatch(actGetProductsHome());
-        setTotal(products.length);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch]);
-
-    const indexOfFirstPage = (page - 1) * postPerPage;
-    const currentPost = products.slice(indexOfFirstPage, indexOfFirstPage + postPerPage);
 
     const onChange = (newValue) => {
         setInputValue(newValue);
@@ -92,14 +85,18 @@ export default function ProductPage() {
                     <>
                         <div className="product__items">
                             {!isLoading ? (
-                                !!currentPost.length ? (
-                                    currentPost
+                                !!products.length ? (
+                                    products
                                         .filter(
                                             (product) =>
                                                 product.price >= parseInt(inputValue[0]) &&
                                                 product.price < parseInt(inputValue[1]),
                                         )
-                                        .map((product) => <ItemContent key={product?.id} product={product} />)
+                                        .map((product) => (
+                                            <>
+                                                <ItemContent key={product?.id} product={product} />
+                                            </>
+                                        ))
                                 ) : (
                                     'Không có sản phẩm !'
                                 )
@@ -109,12 +106,6 @@ export default function ProductPage() {
                                     <ListSkeleton />
                                 </>
                             )}
-                            <Pagination
-                                onChange={(value) => setPage(value)}
-                                pageSize={postPerPage}
-                                total={total}
-                                current={page}
-                            />
                         </div>
                     </>
                 ) : (
@@ -159,7 +150,7 @@ export default function ProductPage() {
                                   <>
                                       <li
                                           key={product?.id}
-                                          onClick={() => check(product?.brand)}
+                                          onClick={() => checkBrand(product?.brand)}
                                           className={`${
                                               isActive === product?.brand ? 'active-style' : 'non-active-style'
                                           }`}
