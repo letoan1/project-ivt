@@ -159,9 +159,11 @@ export default function Header() {
 
                             <span className="masthead__advise"></span>
                             {profile?.isAdmin ? (
-                                <h3 onClick={handleLinkToAdmin}>QUẢN LÝ ADMIN PAGE</h3>
+                                <h3 onClick={handleLinkToAdmin} style={{ cursor: 'pointer' }}>
+                                    QUẢN LÝ ADMIN PAGE
+                                </h3>
                             ) : (
-                                <h3>LIÊN HỆ TƯ VẤN</h3>
+                                <h3 style={{ cursor: 'pointer' }}>LIÊN HỆ TƯ VẤN</h3>
                             )}
                         </div>
                         <div className="masthead__login">
@@ -187,7 +189,7 @@ export default function Header() {
                             )}
 
                             <span className="line"></span>
-                            <div className="cart">
+                            <div className="cart" style={{ cursor: 'pointer' }}>
                                 <FontAwesomeIcon
                                     icon={faShoppingCart}
                                     style={{ fontSize: '20px' }}

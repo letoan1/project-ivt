@@ -133,6 +133,21 @@
     margin: 50px 0;
 }
 
+@media only screen and (min-width: 46.25em) and (max-width: 63.9375em) {
+    .product__detail {
+        .product__detail-row {
+            gap: 30px;
+        }
+
+        .product__detail-img {
+            img {
+                max-width: 345px;
+                max-height: 461px;
+            }
+        }
+    }
+}
+
 @media only screen and (max-width: 46.1875em) {
     .product__detail {
         padding: 10px;
