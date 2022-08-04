@@ -16,7 +16,7 @@ export default function RegisterForm(props) {
     const [form] = Form.useForm();
     const [formLogin] = Form.useForm();
 
-    const defaultAvt = 'https://i.pinimg.com/236x/2b/f5/72/2bf572010d4a06b9a7265693f9ff85da.jpg';
+    const defaultAvt = 'https://clmensstore.com/wp-content/uploads/2021/11/cropped-logo-clmensstore-192x192.png';
 
     const handleRegister = (value) => {
         const user = {
