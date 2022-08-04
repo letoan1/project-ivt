@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Space, Table, Button, Popconfirm, message, Input, Image, Tooltip } from 'antd';
+import React, { useEffect, useRef, useState, Suspense } from 'react';
+import { Space, Table, Button, Popconfirm, message, Input, Image, Tooltip, Spin } from 'antd';
 import { EditFilled, DeleteFilled, SearchOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
-import UserForm from '../../Form/UserForm';
 import { getAllUser, deleteUser } from '../../apis/usersApi';
+
+const UserForm = React.lazy(() => import('../../Form/UserForm'));
 
 const Users = () => {
     const THEME = useSelector((state) => state.theme.theme);
@@ -159,27 +160,29 @@ const Users = () => {
     };
     return (
         <>
-            <div className="new-user" style={{ marginBottom: 10 }}>
-                <Button type="primary" onClick={handleAddUser}>
-                    Add new User
-                </Button>
-            </div>
-            <Table
-                dataSource={dataSource}
-                columns={columns}
-                size="medium"
-                loading={isLoading}
-                bordered
-                pagination={{
-                    pageSize: 15,
-                    style: {
-                        padding: '0 20px',
-                    },
-                }}
-                rowKey={(record) => record.id}
-                className={`${isDark ? 'dark-style' : 'light-style'}`}
-            ></Table>
-            <UserForm ref={modalRef} mode={modeModal} reload={fetchUsers} />
+            <Suspense fallback={<Spin tip="Loading..."></Spin>}>
+                <div className="new-user" style={{ marginBottom: 10 }}>
+                    <Button type="primary" onClick={handleAddUser}>
+                        Add new User
+                    </Button>
+                </div>
+                <Table
+                    dataSource={dataSource}
+                    columns={columns}
+                    size="medium"
+                    loading={isLoading}
+                    bordered
+                    pagination={{
+                        pageSize: 15,
+                        style: {
+                            padding: '0 20px',
+                        },
+                    }}
+                    rowKey={(record) => record.id}
+                    className={`${isDark ? 'dark-style' : 'light-style'}`}
+                ></Table>
+                <UserForm ref={modalRef} mode={modeModal} reload={fetchUsers} />
+            </Suspense>
         </>
     );
 };

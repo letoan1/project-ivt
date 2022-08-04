@@ -4,12 +4,18 @@ import { UserOutlined, KeyOutlined } from '@ant-design/icons';
 import './style.css';
 import { useHistory } from 'react-router-dom';
 import { ROUTES } from '../../constants/Router';
+import { useDispatch, useSelector } from 'react-redux';
+import { actLogin } from '../../redux/actions/authAction';
 
 const AdminLoginPage = () => {
     const history = useHistory();
+    const dispatch = useDispatch();
+    const { isLoadingLogin, notif, isLoggIn } = useSelector((state) => state.auth);
     const onFinish = (values) => {
         // Check user, pass
         // Set token in localStorage
+        dispatch(actLogin(values));
+
         if (values.username === 'admin' && values.password === '141213') {
             localStorage.setItem('admin_loggedIn', '*****');
             message.success('Welcome admin page!');

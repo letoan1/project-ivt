@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Space, Table, Button, Popconfirm, message, Input } from 'antd';
+import React, { useEffect, useRef, useState, Suspense } from 'react';
+import { Space, Table, Button, Popconfirm, message, Input, Spin } from 'antd';
 import { EditFilled, DeleteFilled, SearchOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
-import OrderForm from '../../Form/OrderForm';
 import { OrderTypes } from '../../redux/constants';
 import { deleteOrderById } from '../../apis/orderApi';
+
+const OrderForm = React.lazy(() => import('../../Form/OrderForm'));
 
 const Orders = () => {
     const modalRef = useRef(null);
@@ -152,6 +153,7 @@ const Orders = () => {
     ];
 
     const NewOrders = orders.map((order) => {
+        console.log(order.deliveryStatus);
         return {
             ...order,
             deliveryStatus: order.deliveryStatus === undefined ? 'shipped' : order.deliveryStatus,
@@ -177,22 +179,25 @@ const Orders = () => {
     };
     return (
         <>
-            <Table
-                columns={columns}
-                dataSource={NewOrders}
-                bordered
-                loading={isLoading}
-                size="medium"
-                rowKey={(record) => record.id}
-                pagination={{
-                    pageSize: 15,
-                    style: {
-                        padding: '0 20px',
-                    },
-                }}
-                className={`${isDark ? 'dark-style' : 'light-style'}`}
-            ></Table>
-            <OrderForm ref={modalRef} reload={fetchOrders} />
+            <Suspense fallback={<Spin tip="Loading..."></Spin>}>
+                <Table
+                    columns={columns}
+                    dataSource={NewOrders}
+                    bordered
+                    loading={isLoading}
+                    size="medium"
+                    rowKey={(record) => record.id}
+                    pagination={{
+                        pageSize: 15,
+                        style: {
+                            padding: '0 20px',
+                        },
+                        position: ['bottomRight'],
+                    }}
+                    className={`${isDark ? 'dark-style' : 'light-style'}`}
+                ></Table>
+                <OrderForm ref={modalRef} reload={fetchOrders} />
+            </Suspense>
         </>
     );
 };
