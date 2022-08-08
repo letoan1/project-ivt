@@ -37,7 +37,7 @@ export default function Header() {
 
         return false;
     });
-    console.log('asd');
+
     const handleClick = (id) => {
         history.replace(`/products/${id}`);
         setVisibleSearchResult(false);
@@ -105,6 +105,7 @@ export default function Header() {
                         </ul>
                     </div>
                 </div>
+
                 <div className="header__sticky">
                     <div className="masthead">
                         <div className="masthead__logo">
@@ -126,6 +127,7 @@ export default function Header() {
                                     onChange={handleSearchDebound}
                                 />
                             </form>
+
                             {visibleSearchResult && (
                                 <div className="search__result">
                                     <div className="search__result-show">
