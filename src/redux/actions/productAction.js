@@ -62,8 +62,6 @@ export const actFiltersProductSuccess = (payload) => {
 };
 
 export const actGetProductById = (payload) => {
-    console.log(payload);
-
     return {
         type: ProductTypes.GET_PRODUCT_BY_ID,
         payload: payload,

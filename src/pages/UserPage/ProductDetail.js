@@ -24,6 +24,7 @@ export default function ProductDetail() {
     const { isLoggIn, profile } = useSelector((state) => state.auth);
     const [chooseQuantity, setChooseQuantity] = React.useState(1);
     const [form] = Form.useForm();
+    const discount = productDetail?.discount ? productDetail.discount : 0;
 
     let sum = 0;
     for (let i = 0; i < comments.length; i++) {
@@ -65,6 +66,8 @@ export default function ProductDetail() {
         form.resetFields();
     };
 
+    console.log(comments);
+
     const mapListReview = (reviews) => {
         return reviews.map((review) => {
             return (
@@ -75,7 +78,12 @@ export default function ProductDetail() {
                                 <img
                                     src={review.avatar || null}
                                     alt="avatar"
-                                    style={{ width: '30px', height: '30px', borderRadius: '50%', objectFit: 'cover' }}
+                                    style={{
+                                        width: '30px',
+                                        height: '30px',
+                                        borderRadius: '50%',
+                                        objectFit: 'cover',
+                                    }}
                                 ></img>
                                 <h4 style={{ marginBottom: 0 }}>{review.nameCmt}</h4>
                                 <span>{showRating(review.rating)}</span>
@@ -109,6 +117,21 @@ export default function ProductDetail() {
                         <div className="product__detail-desc">
                             <h1>{productDetail?.name}</h1>
                             <span className="price">
+                                {discount !== 0 && (
+                                    <span
+                                        style={{
+                                            textDecoration: 'line-through',
+                                            color: '#334862',
+                                            fontSize: '16px',
+                                            marginRight: '10px',
+                                        }}
+                                    >
+                                        {productDetail?.price.toLocaleString('it-IT', {
+                                            style: 'currency',
+                                            currency: 'VND',
+                                        })}
+                                    </span>
+                                )}
                                 {discountPrice(productDetail)?.toLocaleString('it-IT', {
                                     style: 'currency',
                                     currency: 'VND',
