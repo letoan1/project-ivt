@@ -205,7 +205,7 @@ export default function ProductDetail() {
                             <p>{productDetail?.description}</p>
                             <span>Thông tin về nước hoa {productDetail?.name}</span>
                             <ul>
-                                <li>Giới tính: {productDetail.category}</li>
+                                <li>Giới tính: {productDetail.category === "men's" ? 'Nam' : 'Nữ'}</li>
                                 <li>
                                     Hãng sản xuất:{' '}
                                     {productDetail?.brand?.charAt(0).toUpperCase() + productDetail?.brand?.slice(1)}
