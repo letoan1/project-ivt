@@ -7,7 +7,7 @@ export const createCommentApi = async (payload) => {
 
 export const getCommentByProduct = async (idProduct) => {
     const { data } = await axiosClient.get('comments', {
-        params: { idProduct: idProduct },
+        params: { idProduct: idProduct, _sort: 'id', _order: 'desc' },
     });
     return data;
 };
