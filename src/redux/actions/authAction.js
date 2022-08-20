@@ -20,7 +20,6 @@ export const actSetLoadingSuccess = () => {
 };
 
 export const actLoginSuccess = (payload) => {
-    console.log(payload);
     return {
         type: AuthTypes.LOGIN_SUCCESS,
         payload: payload,

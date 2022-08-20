@@ -39,6 +39,23 @@
 
         .icon {
             font-size: 110px;
+            position: relative;
+
+            .order-number {
+                font-size: 14px;
+                line-height: 26px;
+                min-width: 25px;
+                height: 25px;
+                display: inline-block;
+                position: absolute;
+                top: 15px;
+                right: -5px;
+                border-radius: 50%;
+                font-weight: 600;
+                padding: 0 5px;
+                background: #29ac8f;
+                color: #ffffff;
+            }
         }
 
         .profile__text {
@@ -46,6 +63,17 @@
             font-size: 18px;
             font-weight: bold;
             margin: 15px 0 0;
+        }
+    }
+}
+
+@media only screen and (max-width: 46.1875em) {
+    .profile {
+        padding: 10px;
+        .profile__content {
+            .profile__grid {
+                grid-template-columns: 1fr;
+            }
         }
     }
 }

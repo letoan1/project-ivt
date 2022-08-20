@@ -13,3 +13,10 @@
 .swiper.swiper-initialized.swiper-horizontal.swiper-pointer-events.swiper-backface-hidden.mySwiper {
     width: 100%;
 }
+
+@media only screen and (max-width: 46.1875em) {
+    .swiper-slide {
+        max-width: 220px;
+        margin-right: 10px;
+    }
+}

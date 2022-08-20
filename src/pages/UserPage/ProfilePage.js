@@ -1,9 +1,9 @@
 import React from 'react';
-import { Button, Card } from 'antd';
+import { Button, Card, Image } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { actLogout } from '../redux/actions/authAction';
-import '../sass/_profile.scss';
+import { actLogout } from '../../redux/actions/authAction';
+import '../../sass/_profile.scss';
 import {
     CreditCardOutlined,
     HeartOutlined,
@@ -13,11 +13,23 @@ import {
     UserOutlined,
 } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
+import { actGetOrderUser } from '../../redux/actions/orderAction';
 
 export default function ProfilePage() {
     const dispatch = useDispatch();
     const { profile } = useSelector((state) => state.auth);
+    const { orders } = useSelector((state) => state.orderReducer);
+
     const history = useHistory();
+
+    const handleChangeProfilePage = (path) => {
+        history.push(`/profile/${path}`);
+    };
+
+    React.useEffect(() => {
+        dispatch(actGetOrderUser(profile.id));
+        // eslint-disable-next-line
+    }, []);
 
     const handleLogOut = () => {
         dispatch(actLogout());
@@ -29,13 +41,12 @@ export default function ProfilePage() {
             <div className="profile-container">
                 <div className="profile__info">
                     <div className="profile__info-avatar">
-                        <img
-                            src="https://i.pinimg.com/236x/31/50/eb/3150eb1f27c9ccb57b1dd7933cb70e8a.jpg"
-                            alt="avatar"
-                        />
+                        <div style={{ maxHeight: '220px' }}>
+                            <Image src={profile?.avatar} />
+                        </div>
                         <div className="profile__utilities">
-                            <p>{profile?.email?.slice(0, -10)}</p>
-                            <p>{profile.mail}</p>
+                            <p>{profile?.username}</p>
+                            <p>{profile?.email}</p>
                             <Button
                                 type="primary"
                                 style={{ background: '#000', border: '1px solid #000' }}
@@ -48,14 +59,16 @@ export default function ProfilePage() {
                 </div>
                 <div className="profile__content">
                     <div className="profile__grid">
-                        <Card>
+                        <Card onClick={() => handleChangeProfilePage('ordered')}>
                             <span className="icon">
                                 <ShoppingCartOutlined />
+                                <span className="order-number">{orders.length}</span>
                             </span>
                             <p className="profile__text">Đơn hàng của bạn</p>
+
                             <p>Kiểm tra các đơn hàng mà bạn đã từng đặt tại Website CL Men's Store</p>
                         </Card>
-                        <Card>
+                        <Card onClick={() => handleChangeProfilePage('change-profile')}>
                             <span className="icon">
                                 <UserOutlined />
                             </span>

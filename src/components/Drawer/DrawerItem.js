@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { actRemoveToCartSuccess } from '../../redux/actions/cartAction';
 import { Link, useHistory } from 'react-router-dom';
 
+import { discountPrice } from '../../components/Sale/ItemContent';
 import '../../sass/_drawer.scss';
 import '../../sass/_button.scss';
 import { Button } from 'antd';
@@ -22,7 +23,7 @@ export default function DrawerItem() {
     };
 
     const totalMoney = cart.reduce((total, product) => {
-        total += product?.quantity * product?.price;
+        total += product?.quantity * discountPrice(product);
         return total;
     }, 0);
 
@@ -31,16 +32,19 @@ export default function DrawerItem() {
             {!!cart.length
                 ? cart?.map((item) => (
                       <div className="drawer-item" key={item?.id}>
-                          <img src={item?.img} alt={item?.title} onClick={() => handleClick(item?.id)} />
+                          <img src={item?.srcImage} alt={item?.name} onClick={() => handleClick(item?.id)} />
                           <div className="drawer-mid">
                               <span style={{ color: '#334862', textOverflow: 'ellipsis', lineHeight: 1.3 }}>
-                                  {item?.title}
+                                  {item?.name}
                               </span>
                               <div className="drawer-money">
                                   <span>{item?.quantity}</span>
                                   <span>X</span>
                                   <span style={{ fontWeight: 'bold' }}>
-                                      {item?.price?.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}
+                                      {discountPrice(item)?.toLocaleString('it-IT', {
+                                          style: 'currency',
+                                          currency: 'VND',
+                                      })}
                                   </span>
                               </div>
                           </div>
@@ -58,10 +62,16 @@ export default function DrawerItem() {
                 )}
             </p>
             <div className="button-drawer">
-                <Link to="/cart-detail">
-                    <Button className="btn-add-to-card">XEM GIỎ HÀNG</Button>
-                </Link>
-                <Button className="btn-add-to-card">THANH TOÁN</Button>
+                {!!cart.length ? (
+                    <>
+                        <Link to="/cart-detail">
+                            <Button className="btn-add-to-card">XEM GIỎ HÀNG</Button>
+                        </Link>
+                        <Link to="/checkout">
+                            <Button className="btn-add-to-card">THANH TOÁN</Button>
+                        </Link>
+                    </>
+                ) : null}
             </div>
         </>
     );

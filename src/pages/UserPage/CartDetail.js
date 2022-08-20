@@ -3,11 +3,12 @@ import React from 'react';
 import { Button, Table, Popconfirm } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { ArrowLeftOutlined, CloseCircleOutlined } from '@ant-design/icons';
-
-import '../sass/_button.scss';
-import '../sass/_cart-detail.scss';
-import { actRemoveToCartSuccess } from '../redux/actions/cartAction';
 import { Link, useHistory } from 'react-router-dom';
+
+import '../../sass/_button.scss';
+import '../../sass/_cart-detail.scss';
+import { actRemoveToCartSuccess } from '../../redux/actions/cartAction';
+import { discountPrice } from '../../components/Sale/ItemContent';
 
 export default function CartDetail() {
     const { cart } = useSelector((state) => state.cartReducer);
@@ -23,13 +24,9 @@ export default function CartDetail() {
     };
 
     const totalMoney = cart.reduce((total, product) => {
-        total += product?.quantity * product?.price;
+        total += product?.quantity * discountPrice(product);
         return total;
     }, 0);
-
-    const shipping = 15000;
-
-    const total = totalMoney + shipping;
 
     const columns = [
         {
@@ -50,13 +47,13 @@ export default function CartDetail() {
 
                     <div onClick={() => handleClick(item?.id)} style={{ display: 'flex', alignItems: 'center' }}>
                         <img
-                            src={item?.img}
-                            alt={item?.title}
+                            src={item?.srcImage}
+                            alt={item?.name}
                             width="60px"
                             height="60px"
                             style={{ margin: '0 10px' }}
                         />
-                        <p>{item?.title}</p>
+                        <p>{item?.name}</p>
                     </div>
                 </div>
             ),
@@ -67,7 +64,7 @@ export default function CartDetail() {
             key: 'price',
             render: (_, item) => (
                 <span key={item?.id}>
-                    {item?.price.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}
+                    {discountPrice(item)?.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}
                 </span>
             ),
         },
@@ -76,6 +73,7 @@ export default function CartDetail() {
             dataIndex: 'quantity',
             key: 'quantity',
             render: (_, item) => <span key={item?.id}>{item?.quantity}</span>,
+            responsive: ['md'],
         },
         {
             title: 'TẠM TÍNH',
@@ -83,9 +81,13 @@ export default function CartDetail() {
             key: 'total',
             render: (_, item) => (
                 <span key={item?.id}>
-                    {(item?.quantity * item?.price)?.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}
+                    {(item?.quantity * discountPrice(item))?.toLocaleString('it-IT', {
+                        style: 'currency',
+                        currency: 'VND',
+                    })}
                 </span>
             ),
+            responsive: ['md'],
         },
     ];
 
@@ -111,7 +113,8 @@ export default function CartDetail() {
                         Tính phí giao hàng
                     </p>
                     <p>
-                        <strong>Tổng:</strong> {total?.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}
+                        <strong>Tổng:</strong>{' '}
+                        {totalMoney?.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}
                     </p>
                     <Link to="/checkout">
                         <Button className="btn-add-to-card">TIẾN HÀNH THANH TOÁN</Button>

@@ -4,9 +4,6 @@ const initialState = {
     isLoading: false,
     productDetail: {},
     products: [],
-    productSales: [],
-    productNews: [],
-    productBestSellers: [],
 };
 
 const productReducer = (state = initialState, action) => {
@@ -16,9 +13,6 @@ const productReducer = (state = initialState, action) => {
                 ...state,
                 isLoading: false,
                 products: action.payload.products,
-                productSales: action.payload.productSale,
-                productNews: action.payload.productNew,
-                productBestSellers: action.payload.productBestSeller,
             };
         }
         case ProductTypes.GET_PRODUCT_BY_ID_SUCCESS: {
@@ -27,6 +21,9 @@ const productReducer = (state = initialState, action) => {
         case ProductTypes.GET_PRODUCT_BY_ID_FAIL: {
             window.location.href = '/';
             return { ...state, isLoading: false };
+        }
+        case ProductTypes.SET_IS_LOADING: {
+            return { ...state, isLoading: true };
         }
         default:
             return { ...state };

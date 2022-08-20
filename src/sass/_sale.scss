@@ -36,3 +36,35 @@
     font-weight: bold;
     color: $black-color;
 }
+
+.swiper-horizontal > .swiper-pagination-bullets,
+.swiper-pagination-bullets.swiper-pagination-horizontal {
+    bottom: 0;
+}
+
+@media only screen and (min-width: 46.25em) and (max-width: 63.9375em) {
+    .sale {
+        .sale__box {
+            padding: 20px 0;
+        }
+
+        .sale__box--item {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+}
+
+@media only screen and (max-width: 46.1875em) {
+    .sale {
+        .sale__box {
+            padding: 0;
+        }
+        .sale__box--item {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-left: 0;
+        }
+    }
+}

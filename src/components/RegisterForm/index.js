@@ -1,8 +1,8 @@
 import '../../sass/_register.scss';
 import { actCreateUser } from '../../redux/actions/userAction';
 
-import { Button, Checkbox, Form, Input, Select, Modal, message } from 'antd';
 import React from 'react';
+import { Button, Form, Input, Select, Modal, message } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { actLogin } from '../../redux/actions/authAction';
 const { Option } = Select;
@@ -16,14 +16,18 @@ export default function RegisterForm(props) {
     const [form] = Form.useForm();
     const [formLogin] = Form.useForm();
 
+    const defaultAvt = 'https://clmensstore.com/wp-content/uploads/2021/11/cropped-logo-clmensstore-192x192.png';
+
     const handleRegister = (value) => {
         const user = {
-            email: value.username,
+            username: value.username,
             password: value.password,
             phone: value.phone,
-            mail: value.email,
+            email: value.email,
             address: value.address,
             gender: value.gender,
+            avatar: defaultAvt,
+            isAdmin: false,
         };
         message.success('Đăng ký thành công !');
         dispatch(actCreateUser(user));
@@ -56,14 +60,10 @@ export default function RegisterForm(props) {
         // eslint-disable-next-line
     }, [isLoadingLogin]);
 
-    if (isLoggIn) {
-        console.log('Login succsessfully !');
-    }
-
     return (
         <div className="register">
             <Modal
-                title={'Register Member & Login'}
+                title={'Đăng nhập & Đăng ký'}
                 centered
                 footer={null}
                 mask={true}
@@ -90,7 +90,7 @@ export default function RegisterForm(props) {
                             onFinish={handleRegister}
                         >
                             <Form.Item
-                                label="Username"
+                                label="Tên đăng nhập"
                                 name="username"
                                 rules={[
                                     {
@@ -98,6 +98,7 @@ export default function RegisterForm(props) {
                                         message: 'Không được bỏ trống trường này !',
                                     },
                                 ]}
+                                hasFeedback
                             >
                                 <Input />
                             </Form.Item>
@@ -115,12 +116,13 @@ export default function RegisterForm(props) {
                                         message: 'Không được bỏ trống trường này !',
                                     },
                                 ]}
+                                hasFeedback
                             >
                                 <Input />
                             </Form.Item>
 
                             <Form.Item
-                                label="Password"
+                                label="Mật khẩu"
                                 name="password"
                                 rules={[
                                     {
@@ -132,12 +134,13 @@ export default function RegisterForm(props) {
                                         message: 'Mật khẩu phải có ít nhất 6 ký tự !',
                                     },
                                 ]}
+                                hasFeedback
                             >
                                 <Input.Password />
                             </Form.Item>
 
                             <Form.Item
-                                label="Retype password"
+                                label="Nhập lại mật khẩu"
                                 name="retype-password"
                                 dependencies={['password']}
                                 rules={[
@@ -154,12 +157,13 @@ export default function RegisterForm(props) {
                                         },
                                     }),
                                 ]}
+                                hasFeedback
                             >
                                 <Input.Password />
                             </Form.Item>
 
                             <Form.Item
-                                label="Address"
+                                label="Địa chỉ"
                                 name="address"
                                 rules={[
                                     {
@@ -167,12 +171,13 @@ export default function RegisterForm(props) {
                                         message: 'Không được bỏ trống trường này !',
                                     },
                                 ]}
+                                hasFeedback
                             >
                                 <Input />
                             </Form.Item>
 
                             <Form.Item
-                                label="Phone"
+                                label="Số điện thoại"
                                 name="phone"
                                 rules={[
                                     { required: true, message: 'Không được bỏ trống trường này !' },
@@ -185,12 +190,13 @@ export default function RegisterForm(props) {
                                         },
                                     }),
                                 ]}
+                                hasFeedback
                             >
                                 <Input />
                             </Form.Item>
 
                             <Form.Item
-                                label="Gender"
+                                label="Chọn giới tính"
                                 name="gender"
                                 rules={[
                                     {
@@ -198,11 +204,12 @@ export default function RegisterForm(props) {
                                         message: 'Không được bỏ trống trường này !',
                                     },
                                 ]}
+                                hasFeedback
                             >
                                 <Select placeholder="Chọn giới tính của bạn..." allowClear>
-                                    <Option value="male">Male</Option>
-                                    <Option value="female">Female</Option>
-                                    <Option value="other">Other</Option>
+                                    <Option value="male">Nam</Option>
+                                    <Option value="female">Nữ</Option>
+                                    <Option value="other">Khác</Option>
                                 </Select>
                             </Form.Item>
 
@@ -235,7 +242,7 @@ export default function RegisterForm(props) {
                             onFinish={handleLogin}
                         >
                             <Form.Item
-                                label="Username"
+                                label="Tên đăng nhập"
                                 name="username"
                                 rules={[
                                     {
@@ -247,7 +254,7 @@ export default function RegisterForm(props) {
                                 <Input />
                             </Form.Item>
                             <Form.Item
-                                label="Password"
+                                label="Mật khẩu"
                                 name="password"
                                 rules={[
                                     {
@@ -257,16 +264,6 @@ export default function RegisterForm(props) {
                                 ]}
                             >
                                 <Input.Password />
-                            </Form.Item>
-                            <Form.Item
-                                name="remember"
-                                valuePropName="checked"
-                                wrapperCol={{
-                                    offset: 8,
-                                    span: 16,
-                                }}
-                            >
-                                <Checkbox>Remember me</Checkbox>
                             </Form.Item>
 
                             <Form.Item

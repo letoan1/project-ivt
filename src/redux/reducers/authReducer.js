@@ -14,6 +14,7 @@ export const authReducer = (state = initialState, action) => {
             const profile = action.payload.profile;
             const accessToken = action.payload.token;
             localStorage.setItem('accessToken', JSON.stringify(accessToken));
+            profile.isAdmin && localStorage.setItem('admin_loggedIn', '****');
             state = {
                 profile: profile,
                 isLoggIn: true,
@@ -33,19 +34,25 @@ export const authReducer = (state = initialState, action) => {
             };
             return { ...state };
         }
+
         case AuthTypes.LOGOUT: {
             localStorage.removeItem('accessToken');
+            localStorage.removeItem('admin_loggedIn');
             return { ...initialState };
         }
+
         case AuthTypes.GET_PROFILE_FAIL: {
             return { ...initialState };
         }
+
         case AuthTypes.LOGIN_FAIL: {
             return { ...state, isLoadingLogin: false, notif: 'Đăng nhập thất bại !' };
         }
+
         case AuthTypes.SET_IS_LOADING: {
             return { ...state, isLoadingLogin: true };
         }
+
         default:
             return { ...state };
     }
